@@ -6,7 +6,7 @@ use warnings;
 use Test::More;
 use Test::LMU;
 use Tie::Array ();
-use List::MoreUtils ':all';
+use List::SomeUtils ':all';
 
 use Config;
 
@@ -869,7 +869,7 @@ sub test_pairwise
 
   SKIP:
     {
-        List::MoreUtils::_XScompiled or skip "PurePerl will warn here ...", 1;
+        List::SomeUtils::_XScompiled or skip "PurePerl will warn here ...", 1;
         my ( $a, $b, @t );
         eval {
             my @l1 = ( 1 .. 10 );
@@ -881,7 +881,7 @@ sub test_pairwise
 
   SKIP:
     {
-        List::MoreUtils::_XScompiled and skip "XS will die on purpose here ...", 1;
+        List::SomeUtils::_XScompiled and skip "XS will die on purpose here ...", 1;
         my @warns = ();
         local $SIG{__WARN__} = sub { push @warns, @_ };
         my ( $a, $b, @t );
@@ -893,7 +893,7 @@ sub test_pairwise
     is_dying( sub { &pairwise( 42, \@a, \@b ); } );
   SKIP:
     {
-        List::MoreUtils::_XScompiled or skip "PurePerl will not core here ...", 2;
+        List::SomeUtils::_XScompiled or skip "PurePerl will not core here ...", 2;
         is_dying(
             sub {
                 @c = &pairwise( sub { }, 1, \@b );
@@ -1234,7 +1234,7 @@ sub test_part
 
   SKIP:
     {
-        List::MoreUtils::_XScompiled and skip "Only PurePerl will warn here ...", 1;
+        List::SomeUtils::_XScompiled and skip "Only PurePerl will warn here ...", 1;
         my @warns = ();
         local $SIG{__WARN__} = sub { push @warns, [@_] };
         @part = part { undef } @list;

@@ -175,8 +175,8 @@ in_pad (SV *code)
 #define EACH_ARRAY_BODY \
 	int i;										\
 	arrayeach_args * args;								\
-	HV *stash = gv_stashpv("List::MoreUtils_ea", TRUE);				\
-	CV *closure = newXS(NULL, XS_List__MoreUtils__array_iterator, __FILE__);	\
+	HV *stash = gv_stashpv("List::SomeUtils_ea", TRUE);				\
+	CV *closure = newXS(NULL, XS_List__SomeUtils__array_iterator, __FILE__);	\
 											\
 	/* prototype */									\
 	sv_setpv((SV*)closure, ";$");							\
@@ -318,7 +318,7 @@ arraylike(SV *array)
     return is_array(array) || is_like( array, "@{}" );
 }
 
-MODULE = List::MoreUtils_ea             PACKAGE = List::MoreUtils_ea
+MODULE = List::SomeUtils_ea             PACKAGE = List::SomeUtils_ea
 
 void
 DESTROY(sv)
@@ -338,7 +338,7 @@ DESTROY(sv)
     }
 
 
-MODULE = List::MoreUtils_na             PACKAGE = List::MoreUtils_na
+MODULE = List::SomeUtils_na             PACKAGE = List::SomeUtils_na
 
 void
 DESTROY(sv)
@@ -357,7 +357,7 @@ DESTROY(sv)
 	}
     }
 
-MODULE = List::MoreUtils		PACKAGE = List::MoreUtils
+MODULE = List::SomeUtils		PACKAGE = List::SomeUtils
 
 void
 any (code,...)
@@ -1068,7 +1068,7 @@ _array_iterator (method = "")
 	int i;
 	int exhausted = 1;
 
-	/* 'cv' is the hidden argument with which XS_List__MoreUtils__array_iterator (this XSUB)
+	/* 'cv' is the hidden argument with which XS_List__SomeUtils__array_iterator (this XSUB)
 	 * is called. The closure_arg struct is stored in this CV. */
 
 	arrayeach_args *args = (arrayeach_args *)(CvXSUBANY(cv).any_ptr);
@@ -1279,7 +1279,7 @@ _natatime_iterator ()
 	int i;
 	int nret;
 
-	/* 'cv' is the hidden argument with which XS_List__MoreUtils__array_iterator (this XSUB)
+	/* 'cv' is the hidden argument with which XS_List__SomeUtils__array_iterator (this XSUB)
 	 * is called. The closure_arg struct is stored in this CV. */
 
 	natatime_args *args = (natatime_args*)CvXSUBANY(cv).any_ptr;
@@ -1308,9 +1308,9 @@ natatime (n, ...)
     {
 	int i;
 	natatime_args * args;
-	HV *stash = gv_stashpv("List::MoreUtils_na", TRUE);
+	HV *stash = gv_stashpv("List::SomeUtils_na", TRUE);
 
-	CV *closure = newXS(NULL, XS_List__MoreUtils__natatime_iterator, __FILE__);
+	CV *closure = newXS(NULL, XS_List__SomeUtils__natatime_iterator, __FILE__);
 
 	/* must NOT set prototype on iterator:
 	 * otherwise one cannot write: &$it */

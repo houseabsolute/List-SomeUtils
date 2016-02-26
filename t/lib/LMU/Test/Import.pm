@@ -12,7 +12,7 @@ use Test::More;
 sub run_tests
 {
     use_ok(
-        "List::MoreUtils", qw(any all none notall
+        "List::SomeUtils", qw(any all none notall
           any_u all_u none_u notall_u
           true false firstidx lastidx
           insert_after insert_after_string

@@ -10,7 +10,7 @@ Makefile.old
 .*\.planner
 ^MYMETA.yml$
 ^\..*
-^List-MoreUtils-.*
+^List-SomeUtils-.*
 \.[co]
 MANIFEST.SKIP
 MYMETA.*

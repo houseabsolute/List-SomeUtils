@@ -1,4 +1,4 @@
-package List::MoreUtils;
+package List::SomeUtils;
 
 use 5.006;
 use strict;
@@ -10,7 +10,7 @@ BEGIN
 }
 
 use Exporter::Tiny qw();
-use List::MoreUtils::XS qw();    # try loading XS
+use List::SomeUtils::XS qw();    # try loading XS
 
 my @junctions = qw(any all none notall);
 my @v0_22     = qw(
@@ -99,13 +99,13 @@ for my $set ( values %alias_list )
 
 =head1 NAME
 
-List::MoreUtils - Provide the stuff missing in List::Util
+List::SomeUtils - Provide the stuff missing in List::Util
 
 =head1 SYNOPSIS
 
     # import specific functions
 
-    use List::MoreUtils qw(any uniq);
+    use List::SomeUtils qw(any uniq);
 
     if ( any { /foo/ } uniq @has_duplicates ) {
         # do stuff
@@ -113,20 +113,20 @@ List::MoreUtils - Provide the stuff missing in List::Util
 
     # import everything
 
-    use List::MoreUtils ':all';
+    use List::SomeUtils ':all';
 
     # import by API
 
     # has "original" any/all/none/notall behavior
-    use List::MoreUtils ':like_0.22';
+    use List::SomeUtils ':like_0.22';
     # 0.22 + bsearch
-    use List::MoreUtils ':like_0.24';
+    use List::SomeUtils ':like_0.24';
     # has "simplified" any/all/none/notall behavior + (n)sort_by
-    use List::MoreUtils ':like_0.33';
+    use List::SomeUtils ':like_0.33';
 
 =head1 DESCRIPTION
 
-B<List::MoreUtils> provides some trivial but commonly needed functionality on
+B<List::SomeUtils> provides some trivial but commonly needed functionality on
 lists which is not going to go into L<List::Util>.
 
 All of the below functions are implementable in only a couple of lines of Perl
@@ -142,11 +142,11 @@ couldn't be compiled on this machine.
 Nothing by default. To import all of this module's symbols use the C<:all> tag.
 Otherwise functions can be imported by name as usual:
 
-    use List::MoreUtils ':all';
+    use List::SomeUtils ':all';
 
-    use List::MoreUtils qw{ any firstidx };
+    use List::SomeUtils qw{ any firstidx };
 
-Because historical changes to the API might make upgrading List::MoreUtils
+Because historical changes to the API might make upgrading List::SomeUtils
 difficult for some projects, the legacy API is available via special import
 tags.
 
@@ -155,7 +155,7 @@ tags.
 This API was available from 2006 to 2009, returning undef for empty lists on
 C<all>/C<any>/C<none>/C<notall>:
 
-    use List::MoreUtils ':like_0.22';
+    use List::SomeUtils ':like_0.22';
 
 This import tag will import all functions available as of version 0.22.
 However, it will import C<any_u> as C<any>, C<all_u> as C<all>, C<none_u> as
@@ -166,7 +166,7 @@ C<none>, and C<notall_u> as C<notall>.
 This API was available from 2010 to 2011.  It changed the return value of C<none>
 and added the C<bsearch> function.
 
-    use List::MoreUtils ':like_0.24';
+    use List::SomeUtils ':like_0.24';
 
 This import tag will import all functions available as of version 0.24.
 However it will import C<any_u> as C<any>, C<all_u> as C<all>, and
@@ -180,7 +180,7 @@ modules and thus it's closest to the current API.  It changed the return values
 of C<any>, C<all>, and C<notall>.  It added the C<sort_by> and C<nsort_by> functions
 and the C<distinct> alias for C<uniq>.  It omitted C<bsearch>.
 
-    use List::MoreUtils ':like_0.33';
+    use List::SomeUtils ':like_0.33';
 
 This import tag will import all functions available as of version 0.33.  Note:
 it will not import C<bsearch> for consistency with the 0.33 API.
@@ -741,7 +741,7 @@ While contributions are appreciated, a contribution should not cause more
 effort for the maintainer than the contribution itself saves (see
 L<Open Source Contribution Etiquette|http://tirania.org/blog/archive/2010/Dec-31.html>).
 
-To get more familiar where help could be needed - see L<List::MoreUtils::Contributing>.
+To get more familiar where help could be needed - see L<List::SomeUtils::Contributing>.
 
 =head1 BUGS
 
@@ -775,7 +775,7 @@ Bugs should always be submitted via the CPAN bug tracker.
 
 You can find documentation for this module with the perldoc command.
 
-    perldoc List::MoreUtils
+    perldoc List::SomeUtils
 
 You can also look for information at:
 
@@ -783,23 +783,23 @@ You can also look for information at:
 
 =item * RT: CPAN's request tracker
 
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=List-MoreUtils>
+L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=List-SomeUtils>
 
 =item * AnnoCPAN: Annotated CPAN documentation
 
-L<http://annocpan.org/dist/List-MoreUtils>
+L<http://annocpan.org/dist/List-SomeUtils>
 
 =item * CPAN Ratings
 
-L<http://cpanratings.perl.org/l/List-MoreUtils>
+L<http://cpanratings.perl.org/l/List-SomeUtils>
 
 =item * CPAN Search
 
-L<http://search.cpan.org/dist/List-MoreUtils/>
+L<http://search.cpan.org/dist/List-SomeUtils/>
 
 =item * Git Repository
 
-L<https://github.com/perl5-utils/List-MoreUtils>
+L<https://github.com/perl5-utils/List-SomeUtils>
 
 =back
 
@@ -882,7 +882,7 @@ development releases.
 Special thanks goes to David Golden who spent a lot of effort to develop
 a design to support current state of CPAN as well as ancient software
 somewhere in the dark. He also contributed a lot of patches to refactor
-the API frontend to welcome any user of List::MoreUtils - from ancient
+the API frontend to welcome any user of List::SomeUtils - from ancient
 past to recently last used.
 
 Toby Inkster provided a lot of useful feedback for sane importer code
@@ -900,7 +900,7 @@ my mailbox. This includes:
 
 =item * List::Util export pass-through
 
-Allow B<List::MoreUtils> to pass-through the regular L<List::Util>
+Allow B<List::SomeUtils> to pass-through the regular L<List::Util>
 functions to end users only need to C<use> the one module.
 
 =item * uniq_by(&@)

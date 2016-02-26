@@ -1,12 +1,12 @@
 # NAME
 
-List::MoreUtils - Provide the stuff missing in List::Util
+List::SomeUtils - Provide the stuff missing in List::Util
 
 # SYNOPSIS
 
     # import specific functions
 
-    use List::MoreUtils qw(any uniq);
+    use List::SomeUtils qw(any uniq);
 
     if ( any { /foo/ } uniq @has_duplicates ) {
         # do stuff
@@ -14,20 +14,20 @@ List::MoreUtils - Provide the stuff missing in List::Util
 
     # import everything
 
-    use List::MoreUtils ':all';
+    use List::SomeUtils ':all';
 
     # import by API
 
     # has "original" any/all/none/notall behavior
-    use List::MoreUtils ':like_0.22';
+    use List::SomeUtils ':like_0.22';
     # 0.22 + bsearch
-    use List::MoreUtils ':like_0.24';
+    use List::SomeUtils ':like_0.24';
     # has "simplified" any/all/none/notall behavior + (n)sort_by
-    use List::MoreUtils ':like_0.33';
+    use List::SomeUtils ':like_0.33';
 
 # DESCRIPTION
 
-__List::MoreUtils__ provides some trivial but commonly needed functionality on
+__List::SomeUtils__ provides some trivial but commonly needed functionality on
 lists which is not going to go into [List::Util](https://metacpan.org/pod/List::Util).
 
 All of the below functions are implementable in only a couple of lines of Perl
@@ -43,11 +43,11 @@ couldn't be compiled on this machine.
 Nothing by default. To import all of this module's symbols use the `:all` tag.
 Otherwise functions can be imported by name as usual:
 
-    use List::MoreUtils ':all';
+    use List::SomeUtils ':all';
 
-    use List::MoreUtils qw{ any firstidx };
+    use List::SomeUtils qw{ any firstidx };
 
-Because historical changes to the API might make upgrading List::MoreUtils
+Because historical changes to the API might make upgrading List::SomeUtils
 difficult for some projects, the legacy API is available via special import
 tags.
 
@@ -56,7 +56,7 @@ tags.
 This API was available from 2006 to 2009, returning undef for empty lists on
 `all`/`any`/`none`/`notall`:
 
-    use List::MoreUtils ':like_0.22';
+    use List::SomeUtils ':like_0.22';
 
 This import tag will import all functions available as of version 0.22.
 However, it will import `any_u` as `any`, `all_u` as `all`, `none_u` as
@@ -67,7 +67,7 @@ However, it will import `any_u` as `any`, `all_u` as `all`, `none_u` as
 This API was available from 2010 to 2011.  It changed the return value of `none`
 and added the `bsearch` function.
 
-    use List::MoreUtils ':like_0.24';
+    use List::SomeUtils ':like_0.24';
 
 This import tag will import all functions available as of version 0.24.
 However it will import `any_u` as `any`, `all_u` as `all`, and
@@ -81,7 +81,7 @@ modules and thus it's closest to the current API.  It changed the return values
 of `any`, `all`, and `notall`.  It added the `sort_by` and `nsort_by` functions
 and the `distinct` alias for `uniq`.  It omitted `bsearch`.
 
-    use List::MoreUtils ':like_0.33';
+    use List::SomeUtils ':like_0.33';
 
 This import tag will import all functions available as of version 0.33.  Note:
 it will not import `bsearch` for consistency with the 0.33 API.
@@ -555,29 +555,29 @@ Bugs should always be submitted via the CPAN bug tracker.
 
 You can find documentation for this module with the perldoc command.
 
-    perldoc List::MoreUtils
+    perldoc List::SomeUtils
 
 You can also look for information at:
 
 - RT: CPAN's request tracker
 
-    [http://rt.cpan.org/NoAuth/Bugs.html?Dist=List-MoreUtils](http://rt.cpan.org/NoAuth/Bugs.html?Dist=List-MoreUtils)
+    [http://rt.cpan.org/NoAuth/Bugs.html?Dist=List-SomeUtils](http://rt.cpan.org/NoAuth/Bugs.html?Dist=List-SomeUtils)
 
 - AnnoCPAN: Annotated CPAN documentation
 
-    [http://annocpan.org/dist/List-MoreUtils](http://annocpan.org/dist/List-MoreUtils)
+    [http://annocpan.org/dist/List-SomeUtils](http://annocpan.org/dist/List-SomeUtils)
 
 - CPAN Ratings
 
-    [http://cpanratings.perl.org/l/List-MoreUtils](http://cpanratings.perl.org/l/List-MoreUtils)
+    [http://cpanratings.perl.org/l/List-SomeUtils](http://cpanratings.perl.org/l/List-SomeUtils)
 
 - CPAN Search
 
-    [http://search.cpan.org/dist/List-MoreUtils/](http://search.cpan.org/dist/List-MoreUtils/)
+    [http://search.cpan.org/dist/List-SomeUtils/](http://search.cpan.org/dist/List-SomeUtils/)
 
 - Git Repository
 
-    [https://github.com/perl5-utils/List-MoreUtils](https://github.com/perl5-utils/List-MoreUtils)
+    [https://github.com/perl5-utils/List-SomeUtils](https://github.com/perl5-utils/List-SomeUtils)
 
 ## Where can I go for help?
 
@@ -658,7 +658,7 @@ development releases.
 Special thanks goes to David Golden who spent a lot of effort to develop
 a design to support current state of CPAN as well as ancient software
 somewhere in the dark. He also contributed a lot of patches to refactor
-the API frontend to welcome any user of List::MoreUtils - from ancient
+the API frontend to welcome any user of List::SomeUtils - from ancient
 past to recently last used.
 
 Toby Inkster provided a lot of useful feedback for sane importer code
@@ -674,7 +674,7 @@ my mailbox. This includes:
 
 - List::Util export pass-through
 
-    Allow __List::MoreUtils__ to pass-through the regular [List::Util](https://metacpan.org/pod/List::Util)
+    Allow __List::SomeUtils__ to pass-through the regular [List::Util](https://metacpan.org/pod/List::Util)
     functions to end users only need to `use` the one module.
 
 - uniq\_by(&@)

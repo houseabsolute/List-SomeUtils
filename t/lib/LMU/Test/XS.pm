@@ -8,7 +8,7 @@ BEGIN
 }
 
 use Test::More;
-use List::MoreUtils;
+use List::SomeUtils;
 
 sub run_tests
 {
@@ -20,7 +20,7 @@ sub test_xs
 {
     defined $ENV{LIST_MOREUTILS_PP}
       or plan skip_all => "No dedicated test for XS/PP - but can't detect configure time settings at tets runtime";
-    is( List::MoreUtils::_XScompiled, 0 + !$ENV{LIST_MOREUTILS_PP}, "_XScompiled" );
+    is( List::SomeUtils::_XScompiled, 0 + !$ENV{LIST_MOREUTILS_PP}, "_XScompiled" );
 }
 
 1;

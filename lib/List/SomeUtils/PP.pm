@@ -1,4 +1,4 @@
-package List::MoreUtils::PP;
+package List::SomeUtils::PP;
 
 use 5.006;
 use strict;
@@ -10,12 +10,12 @@ our $VERSION = '0.413';
 
 =head1 NAME
 
-List::MoreUtils::PP - Provide List::MoreUtils pure Perl implementation
+List::SomeUtils::PP - Provide List::SomeUtils pure Perl implementation
 
 =head1 SYNOPSIS
 
   BEGIN { $ENV{LIST_MOREUTILS_PP} = 1; }
-  use List::MoreUtils qw(:all);
+  use List::SomeUtils qw(:all);
 
 =cut
 

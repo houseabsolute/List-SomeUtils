@@ -11,8 +11,8 @@ Makefile.old
 MANIFEST
 META.*
 MYMETA.*
-MoreUtils.[ico]
-MoreUtils.bs
+SomeUtils.[ico]
+SomeUtils.bs
 nytprof.out
 pm_to_blib
 *.log
@@ -22,4 +22,4 @@ inc/inc_*
 inc/latest*
 t/pureperl/
 t/xs/
-List-MoreUtils-*
+List-SomeUtils-*

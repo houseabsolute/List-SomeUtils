@@ -8,7 +8,7 @@ BEGIN
 }
 
 use Test::More;
-use List::MoreUtils 'pairwise';
+use List::SomeUtils 'pairwise';
 
 sub run_tests
 {

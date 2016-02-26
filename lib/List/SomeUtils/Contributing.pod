@@ -1,6 +1,6 @@
 =head1 NAME
 
-List::MoreUtils::Contributing - Gives rough introduction into contributing to List::MoreUtils
+List::SomeUtils::Contributing - Gives rough introduction into contributing to List::SomeUtils
 
 =head1 DESCRIPTION
 
@@ -16,7 +16,7 @@ a rewrite on purpose - others wont.
 For the moment - it's not the primary goal to clean up the configuration
 stage, until the primary goals and prerequisites are done.
 
-To contribute to List::MoreUtils, one has to arrange with the current
+To contribute to List::SomeUtils, one has to arrange with the current
 situation, dig into details and ask for clarifying when parts are
 incomprehensible.
 
@@ -39,13 +39,13 @@ One example of removing unnessesary infrastructure could be to move
 L<Data::Tumbler> and L<Test::WriteVariants> into authoring mode, when
 imrpoved test for RT#93207 could be reasonably done by a module which
 is recommended for test. The recommendation of
-L<Graham Knop's Makefile.PL#L82|https://github.com/haarg/List-MoreUtils/blob/dd877f963deead742fc90005636c72c6be9060fc/Makefile.PL#L82>
-in L<PR#9|https://github.com/perl5-utils/List-MoreUtils/pull/9> a desirable
+L<Graham Knop's Makefile.PL#L82|https://github.com/haarg/List-SomeUtils/blob/dd877f963deead742fc90005636c72c6be9060fc/Makefile.PL#L82>
+in L<PR#9|https://github.com/perl5-utils/List-SomeUtils/pull/9> a desirable
 one.
 
 =head2 Orientation Guide
 
-List::MoreUtils configuration stage heavily depends on L<Config::AutoConf>
+List::SomeUtils configuration stage heavily depends on L<Config::AutoConf>
 and L<Data::Tumbler>. A few prerequisites of both modules aren't available
 for Perl 5.6 - which leads to a tiny emulation layer t the begin of
 C<Makefile.PL>.
@@ -65,7 +65,7 @@ result in failing tests i some cases - what is fully supported by the
 logic behind L<Data::Tumbler> in combination with L<Test::WriteVariants>.
 
 Finally - L<inc::latest> glues the stuff in a bundle together to allow
-people with older toolchains to use List::MoreUtils out of the box (maybe
+people with older toolchains to use List::SomeUtils out of the box (maybe
 with reduced quantity but full quality).
 
 =head1 SEE ALSO

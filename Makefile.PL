@@ -103,21 +103,21 @@ my %BUILD_DEPS = ();
 my %TEST_DEPS = (
     'Test::More' => 0.96,
 );
-my @XS_FILES = qw(MoreUtils.xs);
+my @XS_FILES = qw(SomeUtils.xs);
 
 WriteMakefile1(
     META_MERGE => {
         'meta-spec' => { version => 2 },
         resources   => {
-            homepage   => 'https://metacpan.org/release/List-MoreUtils',
+            homepage   => 'https://metacpan.org/release/List-SomeUtils',
             repository => {
-                url  => 'https://github.com/perl5-utils/List-MoreUtils.git',
-                web  => 'https://github.com/perl5-utils/List-MoreUtils',
+                url  => 'https://github.com/perl5-utils/List-SomeUtils.git',
+                web  => 'https://github.com/perl5-utils/List-SomeUtils',
                 type => 'git',
             },
             bugtracker => {
-                web    => 'http://rt.cpan.org/Public/Dist/Display.html?Name=List-MoreUtils',
-                mailto => 'bug-List-MoreUtils@rt.cpan.org',
+                web    => 'http://rt.cpan.org/Public/Dist/Display.html?Name=List-SomeUtils',
+                mailto => 'bug-List-SomeUtils@rt.cpan.org',
             },
             license => 'http://dev.perl.org/licenses/',
         },
@@ -151,9 +151,9 @@ WriteMakefile1(
             },
         },
     },
-    NAME         => 'List::MoreUtils',
+    NAME         => 'List::SomeUtils',
     ABSTRACT     => 'Provide the stuff missing in List::Util',
-    VERSION_FROM => 'lib/List/MoreUtils.pm',
+    VERSION_FROM => 'lib/List/SomeUtils.pm',
     AUTHOR       => [
         'Tassilo von Parseval <tassilo.von.parseval@rwth-aachen.de>',
         'Adam Kennedy <adamk@cpan.org>',
