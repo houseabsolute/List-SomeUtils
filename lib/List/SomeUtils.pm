@@ -101,6 +101,22 @@ performance as everything is implemented in C. The pure-Perl implementation of
 these functions only serves as a fallback in case the C portions of this module
 couldn't be compiled on this machine.
 
+=head1 WHY DOES THIS MODULE EXIST?
+
+You might wonder why this module exists when we already have
+L<List::MoreUtils>. In fact, this module is the same code as is found in LMU
+with no significant changes. However, the LMU distribution depends on several
+modules for configuration (to run the Makefile.PL) that some folks in the Perl
+community don't think are appopriate for a module high upstream in the CPAN
+river.
+
+I (Dave Rolsky) don't have a strong opinion on this, but I I<do> like the
+functions provided by LMU, and I'm tired of getting patches and PRs to remove
+it from my code.
+
+This distribution exists to let me use the functionality I like without having
+to get into tiring arguments about issues I don't really care about.
+
 =head1 EXPORTS
 
 =head2 Default behavior
@@ -740,11 +756,6 @@ my mailbox. This includes:
 
 =over 4
 
-=item * List::Util export pass-through
-
-Allow B<List::SomeUtils> to pass-through the regular L<List::Util>
-functions to end users only need to C<use> the one module.
-
 =item * uniq_by(&@)
 
 Use code-reference to extract a key based on which the uniqueness is
@@ -777,16 +788,12 @@ array-reference. Suggested by Mark Summersault.
 
 L<List::Util>, L<List::AllUtils>, L<List::UtilsBy>
 
-=head1 COPYRIGHT AND LICENSE
+=head1 HISTORICAL COPYRIGHT
 
 Some parts copyright 2011 Aaron Crane.
 
 Copyright 2004 - 2010 by Tassilo von Parseval
 
 Copyright 2013 - 2015 by Jens Rehsack
-
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself, either Perl version 5.8.4 or,
-at your option, any later version of Perl 5 you may have available.
 
 =cut
