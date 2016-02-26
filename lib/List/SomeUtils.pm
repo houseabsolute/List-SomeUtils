@@ -80,25 +80,15 @@ List::SomeUtils - Provide the stuff missing in List::Util
 =head1 SYNOPSIS
 
     # import specific functions
+    use List::SomeUtils qw( any uniq );
 
-    use List::SomeUtils qw(any uniq);
-
-    if ( any { /foo/ } uniq @has_duplicates ) {
+    my @values = qw( foo bar baz );
+    if ( any {/foo/} @values ) {
         # do stuff
     }
 
     # import everything
-
     use List::SomeUtils ':all';
-
-    # import by API
-
-    # has "original" any/all/none/notall behavior
-    use List::SomeUtils ':like_0.22';
-    # 0.22 + bsearch
-    use List::SomeUtils ':like_0.24';
-    # has "simplified" any/all/none/notall behavior + (n)sort_by
-    use List::SomeUtils ':like_0.33';
 
 =head1 DESCRIPTION
 
@@ -274,7 +264,7 @@ true. Sets C<$_> for each item in LIST in turn.
 
 =head3 insert_after_string STRING VALUE LIST
 
-Inserts VALUE after the first item in LIST which is equal to STRING. 
+Inserts VALUE after the first item in LIST which is equal to STRING.
 
   my @list = qw/This is a list/;
   insert_after_string "a", "longer" => @list;
@@ -647,14 +637,6 @@ that there are more lines of Perl code involved. Therefore, LIST needs to be
 fairly big in order for C<minmax> to win over a naive implementation. This
 limitation does not apply to the XS version.
 
-=head1 ENVIRONMENT
-
-When C<LIST_MOREUTILS_PP> is set, the module will always use the pure-Perl
-implementation and not the XS one. This environment variable is really just
-there for the test-suite to force testing the Perl implementation, and possibly
-for reporting of bugs. I don't see any reason to use it in a production
-environment.
-
 =head1 MAINTENANCE
 
 The maintenance goal is to preserve the documented semantics of the API;
@@ -667,14 +649,6 @@ This module attempts to use few non-core dependencies. Non-core
 configuration and testing modules will be bundled when reasonable;
 run-time dependencies will be added only if they deliver substantial
 benefit.
-
-=head1 CONTRIBUTING
-
-While contributions are appreciated, a contribution should not cause more
-effort for the maintainer than the contribution itself saves (see
-L<Open Source Contribution Etiquette|http://tirania.org/blog/archive/2010/Dec-31.html>).
-
-To get more familiar where help could be needed - see L<List::SomeUtils::Contributing>.
 
 =head1 BUGS
 
