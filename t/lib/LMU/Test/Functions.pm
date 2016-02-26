@@ -25,8 +25,7 @@ sub freeze {
 EOFR
 
 # Run all tests
-sub run_tests
-{
+sub run_tests {
     test_any();
     test_all();
     test_none();
@@ -76,13 +75,13 @@ sub run_tests
 
 # The any function should behave identically to
 # !! grep CODE LIST
-sub test_any_u
-{
+sub test_any_u {
+
     # Normal cases
     my @list = ( 1 .. 10000 );
     is_true( any_u  { $_ == 5000 } @list );
     is_true( any_u  { $_ == 5000 } 1 .. 10000 );
-    is_true( any_u  { defined } @list );
+    is_true( any_u  {defined} @list );
     is_false( any_u { not defined } @list );
     is_true( any_u  { not defined } undef );
     is_undef( any_u {} );
@@ -95,20 +94,21 @@ sub test_any_u
     );
     leak_free_ok(
         'any_u with a coderef that dies' => sub {
+
             # This test is from Kevin Ryde; see RT#48669
             eval {
-                my $ok = any_u { die } 1;
+                my $ok = any_u {die} 1;
             };
         }
     );
     is_dying( sub { &any_u( 42, 4711 ); } );
 }
 
-sub test_all_u
-{
+sub test_all_u {
+
     # Normal cases
     my @list = ( 1 .. 10000 );
-    is_true( all_u  { defined } @list );
+    is_true( all_u  {defined} @list );
     is_true( all_u  { $_ > 0 } @list );
     is_false( all_u { $_ < 5000 } @list );
     is_undef( all_u {} );
@@ -122,13 +122,13 @@ sub test_all_u
     is_dying( sub { &all_u( 42, 4711 ); } );
 }
 
-sub test_none_u
-{
+sub test_none_u {
+
     # Normal cases
     my @list = ( 1 .. 10000 );
     is_true( none_u  { not defined } @list );
     is_true( none_u  { $_ > 10000 } @list );
-    is_false( none_u { defined } @list );
+    is_false( none_u {defined} @list );
     is_undef( none_u {} );
 
     leak_free_ok(
@@ -140,8 +140,8 @@ sub test_none_u
     is_dying( sub { &none_u( 42, 4711 ); } );
 }
 
-sub test_notall_u
-{
+sub test_notall_u {
+
     # Normal cases
     my @list = ( 1 .. 10000 );
     is_true( notall_u  { !defined } @list );
@@ -158,8 +158,8 @@ sub test_notall_u
     is_dying( sub { &notall_u( 42, 4711 ); } );
 }
 
-sub test_one_u
-{
+sub test_one_u {
+
     # Normal cases
     my @list = ( 1 .. 300 );
     is_true( one_u  { 1 == $_ } @list );
@@ -179,8 +179,8 @@ sub test_one_u
     is_dying( sub { &one_u( 42, 4711 ); } );
 }
 
-sub test_true
-{
+sub test_true {
+
     # The null set should return zero
     my $null_scalar = true {};
     my @null_list   = true {};
@@ -189,7 +189,7 @@ sub test_true
 
     # Normal cases
     my @list = ( 1 .. 10000 );
-    is( 10000, true { defined } @list );
+    is( 10000, true {defined} @list );
     is( 0,     true { not defined } @list );
     is( 1,     true { $_ == 5000 } @list );
 
@@ -202,8 +202,8 @@ sub test_true
     is_dying( sub { &true( 42, 4711 ); } );
 }
 
-sub test_false
-{
+sub test_false {
+
     # The null set should return zero
     my $null_scalar = false {};
     my @null_list   = false {};
@@ -213,7 +213,7 @@ sub test_false
     # Normal cases
     my @list = ( 1 .. 10000 );
     is( 10000, false { not defined } @list );
-    is( 0,     false { defined } @list );
+    is( 0,     false {defined} @list );
     is( 1,     false { $_ > 1 } @list );
 
     leak_free_ok(
@@ -225,18 +225,17 @@ sub test_false
     is_dying( sub { &false( 42, 4711 ); } );
 }
 
-sub test_firstidx
-{
+sub test_firstidx {
     my @list = ( 1 .. 10000 );
     is( 4999, ( firstidx { $_ >= 5000 } @list ),  "firstidx" );
     is( -1,   ( firstidx { not defined } @list ), "invalid firstidx" );
-    is( 0,    ( firstidx { defined } @list ),     "real firstidx" );
+    is( 0,    ( firstidx {defined} @list ),       "real firstidx" );
     is( -1, ( firstidx {} ), "empty firstidx" );
 
     # Test the alias
     is( 4999, first_index { $_ >= 5000 } @list );
     is( -1,   first_index { not defined } @list );
-    is( 0,    first_index { defined } @list );
+    is( 0,    first_index {defined} @list );
     is( -1, first_index {} );
 
     leak_free_ok(
@@ -248,18 +247,17 @@ sub test_firstidx
     is_dying( sub { &firstidx( 42, 4711 ); } );
 }
 
-sub test_lastidx
-{
+sub test_lastidx {
     my @list = ( 1 .. 10000 );
     is( 9999, lastidx { $_ >= 5000 } @list );
     is( -1,   lastidx { not defined } @list );
-    is( 9999, lastidx { defined } @list );
+    is( 9999, lastidx {defined} @list );
     is( -1, lastidx {} );
 
     # Test aliases
     is( 9999, last_index { $_ >= 5000 } @list );
     is( -1,   last_index { not defined } @list );
-    is( 9999, last_index { defined } @list );
+    is( 9999, last_index {defined} @list );
     is( -1, last_index {} );
 
     leak_free_ok(
@@ -271,8 +269,7 @@ sub test_lastidx
     is_dying( sub { &lastidx( 42, 4711 ); } );
 }
 
-sub test_onlyidx
-{
+sub test_onlyidx {
     my @list = ( 1 .. 300 );
     is( 0,   onlyidx { 1 == $_ } @list );
     is( 149, onlyidx { 150 == $_ } @list );
@@ -298,12 +295,11 @@ sub test_onlyidx
     is_dying( sub { &onlyidx( 42, 4711 ); } );
 }
 
-sub test_insert_after
-{
+sub test_insert_after {
     my @list = qw{This is a list};
     insert_after { $_ eq "a" } "longer" => @list;
     is( join( ' ', @list ), "This is a longer list" );
-    insert_after { 0 } "bla" => @list;
+    insert_after {0} "bla" => @list;
     is( join( ' ', @list ), "This is a longer list" );
     insert_after { $_ eq "list" } "!" => @list;
     is( join( ' ', @list ), "This is a longer list !" );
@@ -327,8 +323,7 @@ sub test_insert_after
     );
 }
 
-sub test_insert_after_string
-{
+sub test_insert_after_string {
     my @list = qw{This is a list};
     insert_after_string "a", "longer" => @list;
     is( join( ' ', @list ), "This is a longer list" );
@@ -349,8 +344,8 @@ sub test_insert_after_string
     is_dying( sub { &insert_after_string( 42, 4711, "13" ); } );
 }
 
-sub test_apply
-{
+sub test_apply {
+
     # Test the null case
     my $null_scalar = apply {};
     is( $null_scalar, undef, 'apply(null) returns undef' );
@@ -364,19 +359,18 @@ sub test_apply
     ok( is_deeply( \@list,  [ 0 .. 9 ] ) );
     ok( is_deeply( \@list1, [ 1 .. 10 ] ) );
     @list = ( " foo ", " bar ", "     ", "foobar" );
-    @list1 = apply { s/^\s+|\s+$//g } @list;
+    @list1 = apply {s/^\s+|\s+$//g} @list;
     ok( is_deeply( \@list,  [ " foo ", " bar ", "     ", "foobar" ] ) );
     ok( is_deeply( \@list1, [ "foo",   "bar",   "",      "foobar" ] ) );
-    my $item = apply { s/^\s+|\s+$//g } @list;
+    my $item = apply {s/^\s+|\s+$//g} @list;
     is( $item, "foobar" );
 
     # RT 38630
-  SCOPE:
+SCOPE:
     {
         # wrong results from apply() [XS]
         @list  = ( 1 .. 4 );
-        @list1 = apply
-        {
+        @list1 = apply {
             grow_stack();
             $_ = 5;
         }
@@ -388,8 +382,7 @@ sub test_apply
     leak_free_ok(
         apply => sub {
             @list  = ( 1 .. 4 );
-            @list1 = apply
-            {
+            @list1 = apply {
                 grow_stack();
                 $_ = 5;
             }
@@ -399,8 +392,7 @@ sub test_apply
     is_dying( sub { &apply( 42, 4711 ); } );
 }
 
-sub test_indexes
-{
+sub test_indexes {
     my @x = indexes { $_ > 5 } ( 4 .. 9 );
     ok( is_deeply( \@x, [ 2 .. 5 ] ) );
     @x = indexes { $_ > 5 } ( 1 .. 4 );
@@ -435,9 +427,8 @@ sub test_indexes
     $lr and is_deeply( \@o, [ 1, 3, 5 ], "indexes/leak: odd" );
     $lr and is_deeply( \@e, [ 0, 2, 4 ], "indexes/leak: even" );
 
-    if ($have_scalar_util)
-    {
-        my $ref = \( indexes( sub { 1 }, 123 ) );
+    if ($have_scalar_util) {
+        my $ref = \( indexes( sub {1}, 123 ) );
         Scalar::Util::weaken($ref);
         is( $ref, undef, "weakened away" );
     }
@@ -446,18 +437,17 @@ sub test_indexes
 
 # In the following, the @dummy variable is needed to circumvent
 # a parser glitch in the 5.6.x series.
-sub test_before
-{
+sub test_before {
     my @x = before { $_ % 5 == 0 } 1 .. 9;
     ok( is_deeply( \@x, [ 1, 2, 3, 4 ] ) );
-    @x = before { /b/ } my @dummy = qw{ bar baz };
+    @x = before {/b/} my @dummy = qw{ bar baz };
     is_deeply( \@x, [], 'Got the null list' );
-    @x = before { /f/ } @dummy = qw{ bar baz foo };
+    @x = before {/f/} @dummy = qw{ bar baz foo };
     ok( is_deeply( \@x, [qw{ bar baz }] ) );
 
     leak_free_ok(
         before => sub {
-            @x = before { /f/ } @dummy = qw{ bar baz foo };
+            @x = before {/f/} @dummy = qw{ bar baz foo };
         }
     );
     is_dying( sub { &before( 42, 4711 ); } );
@@ -465,18 +455,17 @@ sub test_before
 
 # In the following, the @dummy variable is needed to circumvent
 # a parser glitch in the 5.6.x series.
-sub test_before_incl
-{
+sub test_before_incl {
     my @x = before_incl { $_ % 5 == 0 } 1 .. 9;
     ok( is_deeply( \@x, [ 1, 2, 3, 4, 5 ] ) );
-    @x = before_incl { /foo/ } my @dummy = qw{ bar baz };
+    @x = before_incl {/foo/} my @dummy = qw{ bar baz };
     ok( is_deeply( \@x, [qw{ bar baz }] ) );
-    @x = before_incl { /f/ } @dummy = qw{ bar baz foo };
+    @x = before_incl {/f/} @dummy = qw{ bar baz foo };
     ok( is_deeply( \@x, [qw{ bar baz foo }] ) );
 
     leak_free_ok(
         before_incl => sub {
-            @x = before_incl { /z/ } @dummy = qw{ bar baz foo };
+            @x = before_incl {/z/} @dummy = qw{ bar baz foo };
         }
     );
     is_dying( sub { &before_incl( 42, 4711 ); } );
@@ -484,18 +473,17 @@ sub test_before_incl
 
 # In the following, the @dummy variable is needed to circumvent
 # a parser glitch in the 5.6.x series.
-sub test_after
-{
+sub test_after {
     my @x = after { $_ % 5 == 0 } 1 .. 9;
     ok( is_deeply( \@x, [ 6, 7, 8, 9 ] ) );
-    @x = after { /foo/ } my @dummy = qw{ bar baz };
+    @x = after {/foo/} my @dummy = qw{ bar baz };
     is_deeply( \@x, [], 'Got the null list' );
-    @x = after { /b/ } @dummy = qw{ bar baz foo };
+    @x = after {/b/} @dummy = qw{ bar baz foo };
     ok( is_deeply( \@x, [qw{ baz foo }] ) );
 
     leak_free_ok(
         after => sub {
-            @x = after { /z/ } @dummy = qw{ bar baz foo };
+            @x = after {/z/} @dummy = qw{ bar baz foo };
         }
     );
     is_dying( sub { &after( 42, 4711 ); } );
@@ -503,25 +491,23 @@ sub test_after
 
 # In the following, the @dummy variable is needed to circumvent
 # a parser glitch in the 5.6.x series.
-sub test_after_incl
-{
+sub test_after_incl {
     my @x = after_incl { $_ % 5 == 0 } 1 .. 9;
     ok( is_deeply( \@x, [ 5, 6, 7, 8, 9 ] ) );
-    @x = after_incl { /foo/ } my @dummy = qw{ bar baz };
+    @x = after_incl {/foo/} my @dummy = qw{ bar baz };
     is_deeply( \@x, [], 'Got the null list' );
-    @x = after_incl { /b/ } @dummy = qw{ bar baz foo };
+    @x = after_incl {/b/} @dummy = qw{ bar baz foo };
     ok( is_deeply( \@x, [qw{ bar baz foo }] ) );
 
     leak_free_ok(
         after_incl => sub {
-            @x = after_incl { /z/ } @dummy = qw{ bar baz foo };
+            @x = after_incl {/z/} @dummy = qw{ bar baz foo };
         }
     );
     is_dying( sub { &after_incl( 42, 4711 ); } );
 }
 
-sub test_firstval
-{
+sub test_firstval {
     my $x = firstval { $_ > 5 } 4 .. 9;
     is( $x, 6 );
     $x = firstval { $_ > 5 } 1 .. 4;
@@ -542,8 +528,7 @@ sub test_firstval
     is_dying( sub { &firstval( 42, 4711 ); } );
 }
 
-sub test_onlyval
-{
+sub test_onlyval {
     my @list = ( 1 .. 300 );
     is( 1,     onlyval { 1 == $_ } @list );
     is( 150,   onlyval { 150 == $_ } @list );
@@ -569,8 +554,7 @@ sub test_onlyval
     is_dying( sub { &onlyval( 42, 4711 ); } );
 }
 
-sub test_lastval
-{
+sub test_lastval {
     my $x = lastval { $_ > 5 } 4 .. 9;
     is( $x, 9 );
     $x = lastval { $_ > 5 } 1 .. 4;
@@ -591,8 +575,7 @@ sub test_lastval
     is_dying( sub { &lastval( 42, 4711 ); } );
 }
 
-sub test_firstres
-{
+sub test_firstres {
     my $x = firstres { 2 * ( $_ > 5 ) } 4 .. 9;
     is( $x, 2 );
     $x = firstres { $_ > 5 } 1 .. 4;
@@ -612,8 +595,7 @@ sub test_firstres
     is_dying( sub { &firstres( 42, 4711 ); } );
 }
 
-sub test_lastres
-{
+sub test_lastres {
     my $x = lastres { 2 * ( $_ > 5 ) } 4 .. 9;
     is( $x, 2 );
     $x = lastres { $_ > 5 } 1 .. 4;
@@ -633,14 +615,13 @@ sub test_lastres
     is_dying( sub { &lastres( 42, 4711 ); } );
 }
 
-sub test_onlyres
-{
+sub test_onlyres {
     my @list = ( 1 .. 300 );
     is( "Hallelujah", onlyres { 150 == $_ and "Hallelujah" } @list );
-    is( 1,            onlyres { 300 == $_ } @list );
-    is( undef,        onlyres { 0 == $_ } @list );
-    is( undef,        onlyres { 1 <= $_ } @list );
-    is( undef,        onlyres { !( 127 & $_ ) } @list );
+    is( 1,     onlyres { 300 == $_ } @list );
+    is( undef, onlyres { 0 == $_ } @list );
+    is( undef, onlyres { 1 <= $_ } @list );
+    is( undef, onlyres { !( 127 & $_ ) } @list );
 
     # Test aliases
     is( 1,            only_result { 150 == $_ } @list );
@@ -658,16 +639,14 @@ sub test_onlyres
     is_dying( sub { &onlyres( 42, 4711 ); } );
 }
 
-sub test_each_array
-{
-  SCOPE:
+sub test_each_array {
+SCOPE:
     {
         my @a  = ( 7, 3, 'a', undef, 'r' );
         my @b  = qw{ a 2 -1 x };
         my $it = each_array @a, @b;
         my ( @r, @idx );
-        while ( my ( $a, $b ) = $it->() )
-        {
+        while ( my ( $a, $b ) = $it->() ) {
             push @r, $a, $b;
             push @idx, $it->('index');
         }
@@ -675,7 +654,11 @@ sub test_each_array
         # Do I segfault? I shouldn't.
         $it->();
 
-        ok( is_deeply( \@r, [ 7, 'a', 3, 2, 'a', -1, undef, 'x', 'r', undef ] ) );
+        ok(
+            is_deeply(
+                \@r, [ 7, 'a', 3, 2, 'a', -1, undef, 'x', 'r', undef ]
+            )
+        );
         ok( is_deeply( \@idx, [ 0 .. 4 ] ) );
 
         # Testing two iterators on the same arrays in parallel
@@ -684,8 +667,7 @@ sub test_each_array
         my $i1 = each_array @a, @b;
         my $i2 = each_array @a, @b;
         @r = ();
-        while ( my ( $a, $b ) = $i1->() and my ( $c, $d ) = $i2->() )
-        {
+        while ( my ( $a, $b ) = $i1->() and my ( $c, $d ) = $i2->() ) {
             push @r, $a, $b, $c, $d;
         }
         ok( is_deeply( \@r, [ 1, 2, 1, 2, 3, 4, 3, 4, 5, 6, 5, 6 ] ) );
@@ -698,8 +680,7 @@ sub test_each_array
         # See: <news:1140827861.481475.111380@z34g2000cwc.googlegroups.com>
         my $ea = each_arrayref( [ 1 .. 26 ], [ 'A' .. 'Z' ] );
         ( @a, @b ) = ();
-        while ( my ( $a, $b ) = $ea->() )
-        {
+        while ( my ( $a, $b ) = $ea->() ) {
             push @a, $a;
             push @b, $b;
         }
@@ -710,8 +691,7 @@ sub test_each_array
         my @nums = 1 .. 26;
         $ea = each_arrayref( \@nums, [ 'A' .. 'Z' ] );
         ( @a, @b ) = ();
-        while ( my ( $a, $b ) = $ea->() )
-        {
+        while ( my ( $a, $b ) = $ea->() ) {
             push @a, $a;
             push @b, $b;
         }
@@ -720,15 +700,14 @@ sub test_each_array
         ok( is_deeply( \@b, [ 'A' .. 'Z' ] ) );
     }
 
-  SCOPE:
+SCOPE:
     {
         my @a = ( 7, 3, 'a', undef, 'r' );
         my @b = qw/a 2 -1 x/;
 
         my $it = each_arrayref \@a, \@b;
         my ( @r, @idx );
-        while ( my ( $a, $b ) = $it->() )
-        {
+        while ( my ( $a, $b ) = $it->() ) {
             push @r, $a, $b;
             push @idx, $it->('index');
         }
@@ -736,7 +715,11 @@ sub test_each_array
         # Do I segfault? I shouldn't.
         $it->();
 
-        ok( is_deeply( \@r, [ 7, 'a', 3, 2, 'a', -1, undef, 'x', 'r', undef ] ) );
+        ok(
+            is_deeply(
+                \@r, [ 7, 'a', 3, 2, 'a', -1, undef, 'x', 'r', undef ]
+            )
+        );
         ok( is_deeply( \@idx, [ 0 .. 4 ] ) );
 
         # Testing two iterators on the same arrays in parallel
@@ -745,8 +728,7 @@ sub test_each_array
         my $i1 = each_array @a, @b;
         my $i2 = each_array @a, @b;
         @r = ();
-        while ( my ( $a, $b ) = $i1->() and my ( $c, $d ) = $i2->() )
-        {
+        while ( my ( $a, $b ) = $i1->() and my ( $c, $d ) = $i2->() ) {
             push @r, $a, $b, $c, $d;
         }
         ok( is_deeply( \@r, [ 1, 2, 1, 2, 3, 4, 3, 4, 5, 6, 5, 6 ] ) );
@@ -765,8 +747,7 @@ sub test_each_array
         each_array => sub {
             my @a  = (1);
             my $it = each_array @a;
-            while ( my ($a) = $it->() )
-            {
+            while ( my ($a) = $it->() ) {
             }
         }
     );
@@ -774,8 +755,7 @@ sub test_each_array
         each_arrayref => sub {
             my @a  = (1);
             my $it = each_arrayref \@a;
-            while ( my ($a) = $it->() )
-            {
+            while ( my ($a) = $it->() ) {
             }
         }
     );
@@ -783,8 +763,7 @@ sub test_each_array
     is_dying( sub { &each_arrayref( 42, 4711 ); } );
 }
 
-sub test_pairwise
-{
+sub test_pairwise {
     my @a = ( 1, 2, 3, 4, 5 );
     my @b = ( 2, 4, 6, 8, 10 );
     my @c = pairwise { $a + $b } @a, @b;
@@ -806,15 +785,13 @@ sub test_pairwise
 
     # Test this one more thoroughly: the XS code looks flakey
     # correctness of pairwise_perl proved by human auditing. :-)
-    sub pairwise_perl (&\@\@)
-    {
+    sub pairwise_perl (&\@\@) {
         no strict;
         my $op = shift;
         local ( *A, *B ) = @_;    # syms for caller's input arrays
 
         # Localise $a, $b
-        my ( $caller_a, $caller_b ) = do
-        {
+        my ( $caller_a, $caller_b ) = do {
             my $pkg = caller();
             \*{ $pkg . '::a' }, \*{ $pkg . '::b' };
         };
@@ -834,7 +811,7 @@ sub test_pairwise
     ( @a, @b ) = ();
     push @a, int rand(1000) for 0 .. rand(1000);
     push @b, int rand(1000) for 0 .. rand(1000);
-  SCOPE:
+SCOPE:
     {
         local $SIG{__WARN__} = sub { };    # XXX
         my @res1 = pairwise { $a + $b } @a, @b;
@@ -847,9 +824,12 @@ sub test_pairwise
     @c = pairwise { ( $a, $b ) } @a, @b;
     ok( is_deeply( \@c, [qw/a 1 b 2 c 3/] ) );    # 88
 
-  SKIP:
+SKIP:
     {
-        $ENV{PERL5OPT} and skip 'A defined PERL5OPT may inject extra deps crashing this test', 1;
+        $ENV{PERL5OPT}
+            and skip
+            'A defined PERL5OPT may inject extra deps crashing this test', 1;
+
         # Test that a die inside the code-reference will not be trapped
         eval {
             pairwise { die "I died\n" } @a, @b;
@@ -867,7 +847,7 @@ sub test_pairwise
     @a = qw/a b c/;
     @b = qw/1 2 3/;
 
-  SKIP:
+SKIP:
     {
         List::SomeUtils::_XScompiled or skip "PurePerl will warn here ...", 1;
         my ( $a, $b, @t );
@@ -876,24 +856,33 @@ sub test_pairwise
             @t = pairwise { $a + $b } @l1, @l1;
         };
         my $err = $@;
-        like( $err, qr/Can't use lexical \$a or \$b in pairwise code block/, "pairwise die's on broken caller" );
+        like(
+            $err, qr/Can't use lexical \$a or \$b in pairwise code block/,
+            "pairwise die's on broken caller"
+        );
     }
 
-  SKIP:
+SKIP:
     {
-        List::SomeUtils::_XScompiled and skip "XS will die on purpose here ...", 1;
+        List::SomeUtils::_XScompiled
+            and skip "XS will die on purpose here ...", 1;
         my @warns = ();
         local $SIG{__WARN__} = sub { push @warns, @_ };
         my ( $a, $b, @t );
         my @l1 = ( 1 .. 10 );
         @t = pairwise { $a + $b } @l1, @l1;
-        like( join( "", @warns[ 0, 1 ] ), qr/Use of uninitialized value.*? in addition/, "warning on broken caller" );
+        like(
+            join( "", @warns[ 0, 1 ] ),
+            qr/Use of uninitialized value.*? in addition/,
+            "warning on broken caller"
+        );
     }
 
     is_dying( sub { &pairwise( 42, \@a, \@b ); } );
-  SKIP:
+SKIP:
     {
-        List::SomeUtils::_XScompiled or skip "PurePerl will not core here ...", 2;
+        List::SomeUtils::_XScompiled
+            or skip "PurePerl will not core here ...", 2;
         is_dying(
             sub {
                 @c = &pairwise( sub { }, 1, \@b );
@@ -907,14 +896,12 @@ sub test_pairwise
     }
 }
 
-sub test_natatime
-{
+sub test_natatime {
     my @x = ( 'a' .. 'g' );
     my $it = natatime 3, @x;
     my @r;
     local $" = " ";
-    while ( my @vals = $it->() )
-    {
+    while ( my @vals = $it->() ) {
         push @r, "@vals";
     }
     is( is_deeply( \@r, [ 'a b c', 'd e f', 'g' ] ), 1, "natatime1" );
@@ -922,8 +909,7 @@ sub test_natatime
     my @a = ( 1 .. 1000 );
     $it = natatime 1, @a;
     @r = ();
-    while ( my @vals = &$it )
-    {
+    while ( my @vals = &$it ) {
         push @r, @vals;
     }
     is( is_deeply( \@r, \@a ), 1, "natatime2" );
@@ -932,17 +918,16 @@ sub test_natatime
         natatime => sub {
             my @y = 1;
             my $it = natatime 2, @y;
-            while ( my @vals = $it->() )
-            {
+            while ( my @vals = $it->() ) {
+
                 # do nothing
             }
         }
     );
 }
 
-sub test_zip
-{
-  SCOPE:
+sub test_zip {
+SCOPE:
     {
         my @x = qw/a b c d/;
         my @y = qw/1 2 3 4/;
@@ -950,16 +935,20 @@ sub test_zip
         ok( is_deeply( \@z, [ 'a', 1, 'b', 2, 'c', 3, 'd', 4 ] ) );
     }
 
-  SCOPE:
+SCOPE:
     {
         my @a = ('x');
         my @b = ( '1', '2' );
         my @c = qw/zip zap zot/;
         my @z = zip @a, @b, @c;
-        ok( is_deeply( \@z, [ 'x', 1, 'zip', undef, 2, 'zap', undef, undef, 'zot' ] ) );
+        ok(
+            is_deeply(
+                \@z, [ 'x', 1, 'zip', undef, 2, 'zap', undef, undef, 'zot' ]
+            )
+        );
     }
 
-  SCOPE:
+SCOPE:
     {
         # Make array with holes
         my @a = ( 1 .. 10 );
@@ -968,7 +957,11 @@ sub test_zip
         my @z = zip @a, @d;
         ok(
             is_deeply(
-                \@z, [ 1, undef, 2, undef, 3, undef, 4, undef, 5, undef, 6, undef, 7, undef, 8, undef, 9, undef, 10, undef, ]
+                \@z,
+                [
+                    1, undef, 2, undef, 3, undef, 4, undef, 5, undef, 6,
+                    undef, 7, undef, 8, undef, 9, undef, 10, undef,
+                ]
             )
         );
     }
@@ -983,9 +976,8 @@ sub test_zip
     is_dying( sub { &zip( 1, 2 ); } );
 }
 
-sub test_mesh
-{
-  SCOPE:
+sub test_mesh {
+SCOPE:
     {
         my @x = qw/a b c d/;
         my @y = qw/1 2 3 4/;
@@ -993,17 +985,21 @@ sub test_mesh
         ok( is_deeply( \@z, [ 'a', 1, 'b', 2, 'c', 3, 'd', 4 ] ) );
     }
 
-  SCOPE:
+SCOPE:
     {
         my @a = ('x');
         my @b = ( '1', '2' );
         my @c = qw/zip zap zot/;
         my @z = mesh @a, @b, @c;
-        ok( is_deeply( \@z, [ 'x', 1, 'zip', undef, 2, 'zap', undef, undef, 'zot' ] ) );
+        ok(
+            is_deeply(
+                \@z, [ 'x', 1, 'zip', undef, 2, 'zap', undef, undef, 'zot' ]
+            )
+        );
     }
 
     # Make array with holes
-  SCOPE:
+SCOPE:
     {
         my @a = ( 1 .. 10 );
         my @d;
@@ -1011,7 +1007,11 @@ sub test_mesh
         my @z = mesh @a, @d;
         ok(
             is_deeply(
-                \@z, [ 1, undef, 2, undef, 3, undef, 4, undef, 5, undef, 6, undef, 7, undef, 8, undef, 9, undef, 10, undef, ]
+                \@z,
+                [
+                    1, undef, 2, undef, 3, undef, 4, undef, 5, undef, 6,
+                    undef, 7, undef, 8, undef, 9, undef, 10, undef,
+                ]
             )
         );
     }
@@ -1026,9 +1026,8 @@ sub test_mesh
     is_dying( sub { &mesh( 1, 2 ); } );
 }
 
-sub test_uniq
-{
-  SCOPE:
+sub test_uniq {
+SCOPE:
     {
         my @a = map { ( 1 .. 10 ) } 0 .. 1;
         my @u = uniq @a;
@@ -1038,7 +1037,7 @@ sub test_uniq
     }
 
     # Test aliases
-  SCOPE:
+SCOPE:
     {
         my @a = map { ( 1 .. 10 ) } 0 .. 1;
         my @u = distinct @a;
@@ -1048,7 +1047,7 @@ sub test_uniq
     }
 
     # Test strings
-  SCOPE:
+SCOPE:
     {
         my @a = map { ( "a" .. "z" ) } 0 .. 1;
         my @u = uniq @a;
@@ -1058,11 +1057,14 @@ sub test_uniq
     }
 
     # Test mixing strings and numbers
-  SCOPE:
+SCOPE:
     {
-        my @a  = ( ( map { ( 1 .. 10 ) } 0 .. 1 ), ( map { ( "a" .. "z" ) } 0 .. 1 ) );
+        my @a = (
+            ( map { ( 1 .. 10 ) } 0 .. 1 ),
+            ( map { ( "a" .. "z" ) } 0 .. 1 )
+        );
         my $fa = freeze( \@a );
-        my @u  = uniq map { $_ } @a;
+        my @u  = uniq map {$_} @a;
         my $fu = freeze( \@u );
         is_deeply( \@u, [ 1 .. 10, "a" .. "z" ] );
         is( $fa, freeze( \@a ) );
@@ -1071,19 +1073,25 @@ sub test_uniq
         is( 10 + 26, $u );
     }
 
-  SCOPE:
+SCOPE:
     {
         my @a;
         tie @a, "Tie::StdArray";
-        @a = ( ( map { ( 1 .. 10 ) } 0 .. 1 ), ( map { ( "a" .. "z" ) } 0 .. 1 ) );
+        @a = (
+            ( map { ( 1 .. 10 ) } 0 .. 1 ),
+            ( map { ( "a" .. "z" ) } 0 .. 1 )
+        );
         my @u = uniq @a;
         is_deeply( \@u, [ 1 .. 10, "a" .. "z" ] );
-        @a = ( ( map { ( 1 .. 10 ) } 0 .. 1 ), ( map { ( "a" .. "z" ) } 0 .. 1 ) );
+        @a = (
+            ( map { ( 1 .. 10 ) } 0 .. 1 ),
+            ( map { ( "a" .. "z" ) } 0 .. 1 )
+        );
         my $u = uniq @a;
         is( 10 + 26, $u );
     }
 
-  SCOPE:
+SCOPE:
     {
         my @foo = ( 'a', 'b', '', undef, 'b', 'c', '' );
         my @ufoo = ( 'a', 'b', '', undef, 'c' );
@@ -1114,9 +1122,8 @@ sub test_uniq
     );
 }
 
-sub test_singleton
-{
-  SCOPE:
+sub test_singleton {
+SCOPE:
     {
         my @s = ( 1001 .. 1200 );
         my @d = map { ( 1 .. 1000 ) } 0 .. 1;
@@ -1128,7 +1135,7 @@ sub test_singleton
     }
 
     # Test strings
-  SCOPE:
+SCOPE:
     {
         my @s = ( "AA" .. "ZZ" );
         my @d = map { ( "aa" .. "zz" ) } 0 .. 1;
@@ -1140,14 +1147,14 @@ sub test_singleton
     }
 
     # Test mixing strings and numbers
-  SCOPE:
+SCOPE:
     {
         my @s  = ( 1001 .. 1200, "AA" .. "ZZ" );
         my $fs = freeze( \@s );
         my @d  = map { ( 1 .. 1000, "aa" .. "zz" ) } 0 .. 1;
         my @a  = ( @d, @s );
         my $fa = freeze( \@a );
-        my @u  = singleton map { $_ } @a;
+        my @u  = singleton map {$_} @a;
         my $fu = freeze( \@u );
         is_deeply( \@u, [@s] );
         is( $fs, freeze( \@s ) );
@@ -1157,29 +1164,38 @@ sub test_singleton
         is( scalar @s, $u );
     }
 
-  SCOPE:
+SCOPE:
     {
         my @a;
         tie @a, "Tie::StdArray";
         my @s = ( 1001 .. 1200, "AA" .. "ZZ" );
         my @d = map { ( 1 .. 1000, "aa" .. "zz" ) } 0 .. 1;
         @a = ( @d, @s );
-        my @u = singleton map { $_ } @a;
+        my @u = singleton map {$_} @a;
         is_deeply( \@u, [@s] );
         @a = ( @d, @s );
         my $u = singleton @a;
         is( scalar @s, $u );
     }
 
-  SCOPE:
+SCOPE:
     {
         my @foo = ( 'a', 'b', '', undef, 'b', 'c', '' );
         my @sfoo = ( 'a', undef, 'c' );
-        is_deeply( [ singleton @foo ], \@sfoo, 'one undef is supported correctly by singleton' );
+        is_deeply(
+            [ singleton @foo ], \@sfoo,
+            'one undef is supported correctly by singleton'
+        );
         @foo = ( 'a', 'b', '', undef, 'b', 'c', undef );
         @sfoo = ( 'a', '', 'c' );
-        is_deeply( [ singleton @foo ], \@sfoo, 'twice undef is supported correctly by singleton' );
-        is( ( scalar singleton @foo ), scalar @sfoo, 'scalar twice undef is supported correctly by singleton' );
+        is_deeply(
+            [ singleton @foo ], \@sfoo,
+            'twice undef is supported correctly by singleton'
+        );
+        is(
+            ( scalar singleton @foo ), scalar @sfoo,
+            'scalar twice undef is supported correctly by singleton'
+        );
     }
 
     leak_free_ok(
@@ -1208,8 +1224,7 @@ sub test_singleton
     );
 }
 
-sub test_part
-{
+sub test_part {
     my @list = 1 .. 12;
     my $i    = 0;
     my @part = part { $i++ % 3 } @list;
@@ -1217,33 +1232,43 @@ sub test_part
     ok( is_deeply( $part[1], [ 2, 5, 8, 11 ] ) );
     ok( is_deeply( $part[2], [ 3, 6, 9, 12 ] ) );
 
-    @part = part { 3 } @list;
+    @part = part {3} @list;
     is( $part[0], undef );
     is( $part[1], undef );
     is( $part[2], undef );
     ok( is_deeply( $part[3], [ 1 .. 12 ] ) );
 
     eval {
-        @part = part { -1 } @list;
+        @part = part {-1} @list;
     };
-    ok( $@ =~ /^Modification of non-creatable array value attempted, subscript -1/ );
+    ok( $@
+            =~ /^Modification of non-creatable array value attempted, subscript -1/
+    );
 
     $i = 0;
     @part = part { $i++ == 0 ? 0 : -1 } @list;
     is_deeply( $part[0], [ 1 .. 12 ], "part with negative indices" );
 
-  SKIP:
+SKIP:
     {
-        List::SomeUtils::_XScompiled and skip "Only PurePerl will warn here ...", 1;
+        List::SomeUtils::_XScompiled
+            and skip "Only PurePerl will warn here ...", 1;
         my @warns = ();
         local $SIG{__WARN__} = sub { push @warns, [@_] };
-        @part = part { undef } @list;
+        @part = part {undef} @list;
         is_deeply( $part[0], [ 1 .. 12 ], "part with undef" );
-        like( join( "\n", @{ $warns[0] } ), qr/Use of uninitialized value in array element.*line\s+\d+\.$/, "warning of undef" );
-        is_deeply( \@warns, [ ( $warns[0] ) x 12 ], "amount of similar undef warnings" );
+        like(
+            join( "\n", @{ $warns[0] } ),
+            qr/Use of uninitialized value in array element.*line\s+\d+\.$/,
+            "warning of undef"
+        );
+        is_deeply(
+            \@warns, [ ( $warns[0] ) x 12 ],
+            "amount of similar undef warnings"
+        );
     }
 
-    @part = part { 10000 } @list;
+    @part = part {10000} @list;
     ok( is_deeply( $part[10000], [@list] ) );
     is( $part[0],           undef );
     is( $part[ @part / 2 ], undef );
@@ -1252,9 +1277,8 @@ sub test_part
     # Changing the list in place used to destroy
     # its elements due to a wrong refcnt
     @list = 1 .. 10;
-    @list = part { $_ } @list;
-    foreach ( 1 .. 10 )
-    {
+    @list = part {$_} @list;
+    foreach ( 1 .. 10 ) {
         ok( is_deeply( $list[$_], [$_] ) );
     }
 
@@ -1268,14 +1292,14 @@ sub test_part
 
     leak_free_ok(
         'part with stack-growing' => sub {
+
             # This test is from Kevin Ryde; see RT#38699
             my @part = part { grow_stack(); 1024 } 'one', 'two';
         }
     );
 }
 
-sub test_minmax
-{
+sub test_minmax {
     my @list = reverse 0 .. 10000;
     my ( $min, $max ) = minmax @list;
     is( $min, 0 );
@@ -1345,21 +1369,17 @@ sub test_minmax
     );
 }
 
-sub test_bsearch
-{
+sub test_bsearch {
     my @list = my @in = 1 .. 1000;
-    for my $elem (@in)
-    {
+    for my $elem (@in) {
         ok( scalar bsearch { $_ - $elem } @list );
     }
-    for my $elem (@in)
-    {
+    for my $elem (@in) {
         my ($e) = bsearch { $_ - $elem } @list;
         ok( $e == $elem );
     }
     my @out = ( -10 .. 0, 1001 .. 1011 );
-    for my $elem (@out)
-    {
+    for my $elem (@out) {
         my $r = bsearch { $_ - $elem } @list;
         ok( !defined $r );
     }
@@ -1382,23 +1402,25 @@ sub test_bsearch
         'bsearch with stack-growing and exception' => sub {
             my $elem = int( rand(1000) );
             eval {
-                scalar bsearch { grow_stack(); $_ - $elem or die "Goal!"; $_ - $elem } @list;
+                scalar bsearch {
+                    grow_stack();
+                    $_ - $elem or die "Goal!";
+                    $_ - $elem
+                }
+                @list;
             };
         }
     );
     is_dying( sub { &bsearch( 42, ( 1 .. 100 ) ); } );
 }
 
-sub test_bsearchidx
-{
+sub test_bsearchidx {
     my @list = my @in = 1 .. 1000;
-    for my $i ( 0 .. $#in )
-    {
+    for my $i ( 0 .. $#in ) {
         is( $i, bsearchidx { $_ - $in[$i] } @list );
     }
     my @out = ( -10 .. 0, 1001 .. 1011 );
-    for my $elem (@out)
-    {
+    for my $elem (@out) {
         my $r = bsearchidx { $_ - $elem } @list;
         is( -1, $r );
     }
@@ -1421,20 +1443,25 @@ sub test_bsearchidx
         'bsearch with stack-growing and exception' => sub {
             my $elem = int( rand(1000) );
             eval {
-                bsearchidx { grow_stack(); $_ - $elem or die "Goal!"; $_ - $elem } @list;
+                bsearchidx {
+                    grow_stack();
+                    $_ - $elem or die "Goal!";
+                    $_ - $elem
+                }
+                @list;
             };
         }
     );
     is_dying( sub { &bsearchidx( 42, ( 1 .. 100 ) ); } );
 }
 
-sub test_any
-{
+sub test_any {
+
     # Normal cases
     my @list = ( 1 .. 10000 );
     is_true( any  { $_ == 5000 } @list );
     is_true( any  { $_ == 5000 } 1 .. 10000 );
-    is_true( any  { defined } @list );
+    is_true( any  {defined} @list );
     is_false( any { not defined } @list );
     is_true( any  { not defined } undef );
     is_false( any {} );
@@ -1447,20 +1474,21 @@ sub test_any
     );
     leak_free_ok(
         'any with a coderef that dies' => sub {
+
             # This test is from Kevin Ryde; see RT#48669
             eval {
-                my $ok = any { die } 1;
+                my $ok = any {die} 1;
             };
         }
     );
     is_dying( sub { &any( 42, 4711 ); } );
 }
 
-sub test_all
-{
+sub test_all {
+
     # Normal cases
     my @list = ( 1 .. 10000 );
-    is_true( all  { defined } @list );
+    is_true( all  {defined} @list );
     is_true( all  { $_ > 0 } @list );
     is_false( all { $_ < 5000 } @list );
     is_true( all {} );
@@ -1474,13 +1502,13 @@ sub test_all
     is_dying( sub { &all( 42, 4711 ); } );
 }
 
-sub test_none
-{
+sub test_none {
+
     # Normal cases
     my @list = ( 1 .. 10000 );
     is_true( none  { not defined } @list );
     is_true( none  { $_ > 10000 } @list );
-    is_false( none { defined } @list );
+    is_false( none {defined} @list );
     is_true( none {} );
 
     leak_free_ok(
@@ -1492,8 +1520,8 @@ sub test_none
     is_dying( sub { &none( 42, 4711 ); } );
 }
 
-sub test_notall
-{
+sub test_notall {
+
     # Normal cases
     my @list = ( 1 .. 10000 );
     is_true( notall  { !defined } @list );
@@ -1510,8 +1538,8 @@ sub test_notall
     is_dying( sub { &notall( 42, 4711 ); } );
 }
 
-sub test_one
-{
+sub test_one {
+
     # Normal cases
     my @list = ( 1 .. 300 );
     is_true( one  { 1 == $_ } @list );
@@ -1530,16 +1558,20 @@ sub test_one
     is_dying( sub { &one( 42, 4711 ); } );
 }
 
-sub test_sort_by
-{
+sub test_sort_by {
     my @list = map { [$_] } 1 .. 100;
-    is_deeply( [ sort_by { $_->[0] } @list ], [ map { [$_] } sort { $a cmp $b } 1 .. 100 ] );
+    is_deeply(
+        [ sort_by { $_->[0] } @list ],
+        [ map { [$_] } sort { $a cmp $b } 1 .. 100 ]
+    );
 }
 
-sub test_nsort_by
-{
+sub test_nsort_by {
     my @list = map { [$_] } 1 .. 100;
-    is_deeply( [ nsort_by { $_->[0] } @list ], [ map { [$_] } sort { $a <=> $b } 1 .. 100 ] );
+    is_deeply(
+        [ nsort_by { $_->[0] } @list ],
+        [ map { [$_] } sort { $a <=> $b } 1 .. 100 ]
+    );
 }
 
 1;

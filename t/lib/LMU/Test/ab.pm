@@ -2,22 +2,19 @@ package LMU::Test::ab;
 
 use strict;
 
-BEGIN
-{
+BEGIN {
     $| = 1;
 }
 
 use Test::More;
 use List::SomeUtils 'pairwise';
 
-sub run_tests
-{
+sub run_tests {
     test_ab();
     done_testing();
 }
 
-sub test_ab
-{
+sub test_ab {
     my @A = ( 1, 2, 3, 4, 5 );
     my @B = ( 2, 4, 6, 8, 10 );
     my @C = pairwise { $a + $b } @A, @B;
