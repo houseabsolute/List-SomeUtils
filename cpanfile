@@ -1,5 +1,7 @@
 requires "Carp" => "0";
 requires "Exporter::Tiny" => "0";
+requires "Module::Implementation" => "0";
+requires "Scalar::Util" => "0";
 requires "perl" => "5.006";
 requires "strict" => "0";
 requires "vars" => "0";
@@ -14,6 +16,7 @@ on 'test' => sub {
   requires "Test::More" => "0.96";
   requires "Tie::Array" => "0";
   requires "base" => "0";
+  requires "lib" => "0";
   requires "overload" => "0";
 };
 
@@ -34,14 +37,14 @@ on 'develop' => sub {
   requires "IPC::Open3" => "0";
   requires "Perl::Critic" => "1.123";
   requires "Perl::Tidy" => "20140711";
-  requires "Pod::Coverage" => "0";
   requires "Pod::Coverage::TrustPod" => "0";
+  requires "Scalar::Util" => "0";
+  requires "Storable" => "0";
   requires "Test::CPAN::Changes" => "0.19";
   requires "Test::CPAN::Meta::JSON" => "0.16";
-  requires "Test::CheckManifest" => "0";
   requires "Test::Code::TidyAll" => "0.24";
   requires "Test::EOL" => "0";
-  requires "Test::Kwalitee" => "0";
+  requires "Test::LeakTrace" => "0";
   requires "Test::Mojibake" => "0";
   requires "Test::More" => "0.88";
   requires "Test::NoTabs" => "0";
@@ -49,8 +52,8 @@ on 'develop' => sub {
   requires "Test::Pod::Coverage" => "1.08";
   requires "Test::Pod::LinkCheck" => "0";
   requires "Test::Pod::No404s" => "0";
-  requires "Test::Pod::Spelling::CommonMistakes" => "0";
   requires "Test::Spelling" => "0.12";
   requires "Test::Synopsis" => "0";
   requires "Test::Version" => "1";
+  requires "Tie::Array" => "0";
 };
