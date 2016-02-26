@@ -116,7 +116,7 @@ couldn't be compiled on this machine.
 =head2 Default behavior
 
 Nothing is exported by default. To import all of this module's symbols use the
-C<:all> tag.  Otherwise functions can be imported by name as usual:
+C<:all> tag. Otherwise functions can be imported by name as usual:
 
     use List::SomeUtils ':all';
 
@@ -141,7 +141,7 @@ empty list:
 
 In the first case, the result of the junction applied to the empty list is
 determined by a mathematical reduction to an identity depending on whether
-the underlying comparison is "or" or "and".  Conceptually:
+the underlying comparison is "or" or "and". Conceptually:
 
                     "any are true"      "all are true"
                     --------------      --------------
@@ -149,10 +149,10 @@ the underlying comparison is "or" or "and".  Conceptually:
     1 element:      A || 0              A && 1
     0 elements:     0                   1
 
-In the second case, three-value logic is desired, in which a junction
-applied to an empty list returns C<undef> rather than true or false 
+In the second case, three-value logic is desired, in which a junction applied
+to an empty list returns C<undef> rather than true or false.
 
-Junctions with a C<_u> suffix implement three-valued logic.  Those
+Junctions with a C<_u> suffix implement three-valued logic. Those
 without are boolean.
 
 =head3 all BLOCK LIST
@@ -245,7 +245,7 @@ Evaluation of BLOCK will immediately stop at the second true value.
 =head3 apply BLOCK LIST
 
 Applies BLOCK to each item in LIST and returns a list of the values after BLOCK
-has been applied. In scalar context, the last element is returned.  This
+has been applied. In scalar context, the last element is returned. This
 function is similar to C<map> but will not modify the elements of the input
 list:
 
@@ -286,7 +286,7 @@ Inserts VALUE after the first item in LIST which is equal to STRING.
 
 Evaluates BLOCK for each pair of elements in ARRAY1 and ARRAY2 and returns a
 new list consisting of BLOCK's return values. The two elements are set to C<$a>
-and C<$b>.  Note that those two are aliases to the original value so changing
+and C<$b>. Note that those two are aliases to the original value so changing
 them will modify the input arrays.
 
   @a = (1 .. 5);
@@ -344,7 +344,7 @@ B<RT#49800> can be used to give feedback about this behavior.
 
 Returns a new list by stripping values in LIST occurring more than once by
 comparing the values as hash keys, except that undef is considered separate
-from ''.  The order of elements in the returned list is the same as in LIST.
+from ''. The order of elements in the returned list is the same as in LIST.
 In scalar context, returns the number of elements occurring only once in LIST.
 
   my @x = singleton 1,1,2,2,3,4,5 # returns 3 4 5
@@ -404,9 +404,9 @@ Negative values are only ok when they refer to a partition previously created:
 =head3 each_array ARRAY1 ARRAY2 ...
 
 Creates an array iterator to return the elements of the list of arrays ARRAY1,
-ARRAY2 throughout ARRAYn in turn.  That is, the first time it is called, it
-returns the first element of each array.  The next time, it returns the second
-elements.  And so on, until all elements are exhausted.
+ARRAY2 throughout ARRAYn in turn. That is, the first time it is called, it
+returns the first element of each array. The next time, it returns the second
+elements. And so on, until all elements are exhausted.
 
 This is useful for looping over more than one array at once:
 
@@ -426,7 +426,7 @@ plain arrays.
 =head3 natatime EXPR, LIST
 
 Creates an array iterator, for looping over an array in chunks of
-C<$n> items at a time.  (n at a time, get it?).  An example is
+C<$n> items at a time. (n at a time, get it?). An example is
 probably a better explanation than I could give in words.
 
 Example:
@@ -659,7 +659,7 @@ environment.
 
 The maintenance goal is to preserve the documented semantics of the API;
 bug fixes that bring actual behavior in line with semantics are allowed.
-New API functions may be added over time.  If a backwards incompatible
+New API functions may be added over time. If a backwards incompatible
 change is unavoidable, we will attempt to provide support for the legacy
 API using the same export tag mechanism currently in place.
 
@@ -702,85 +702,20 @@ output of your program with the environment variable C<LIST_MOREUTILS_PP> set
 to a true value. That way I know where to look for the problem (in XS,
 pure-Perl or possibly both).
 
-=head1 SUPPORT
+=head1 BUGS
 
-Bugs should always be submitted via the CPAN bug tracker.
+Please report any bugs or feature requests to
+C<bug-list-someutils@rt.cpan.org>, or through the web interface at
+L<http://rt.cpan.org>. I will be notified, and then you'll automatically be
+notified of progress on your bug as I make changes.
 
-You can find documentation for this module with the perldoc command.
-
-    perldoc List::SomeUtils
-
-You can also look for information at:
-
-=over 4
-
-=item * RT: CPAN's request tracker
-
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=List-SomeUtils>
-
-=item * AnnoCPAN: Annotated CPAN documentation
-
-L<http://annocpan.org/dist/List-SomeUtils>
-
-=item * CPAN Ratings
-
-L<http://cpanratings.perl.org/l/List-SomeUtils>
-
-=item * CPAN Search
-
-L<http://search.cpan.org/dist/List-SomeUtils/>
-
-=item * Git Repository
-
-L<https://github.com/perl5-utils/List-SomeUtils>
-
-=back
-
-=head2 Where can I go for help?
-
-If you have a bug report, a patch or a suggestion, please open a new
-report ticket at CPAN (but please check previous reports first in case
-your issue has already been addressed) or open an issue on GitHub.
-
-Report tickets should contain a detailed description of the bug or
-enhancement request and at least an easily verifiable way of
-reproducing the issue or fix. Patches are always welcome, too - and
-it's cheap to send pull-requests on GitHub. Please keep in mind that
-code changes are more likely accepted when they're bundled with an
-approving test.
-
-If you think you've found a bug then please read
-"How to Report Bugs Effectively" by Simon Tatham:
-L<http://www.chiark.greenend.org.uk/~sgtatham/bugs.html>.
-
-=head2 Where can I go for help with a concrete version?
-
-Bugs and feature requests are accepted against the latest version
-only. To get patches for earlier versions, you need to get an
-agreement with a developer of your choice - who may or not report the
-issue and a suggested fix upstream (depends on the license you have
-chosen).
-
-=head2 Business support and maintenance
-
-Generally, in volunteered projects, there is no right for support.
-While every maintainer is happy to improve the provided software,
-spare time is limited.
-
-For those who have a use case which requires guaranteed support, one of
-the maintainers should be hired or contracted.  For business support you
-can contact Jens via his CPAN email address rehsackATcpan.org. Please
-keep in mind that business support is neither available for free nor
-are you eligible to receive any support based on the license distributed
-with this package.
-
-=head1 THANKS
+=head1 CREDITS
 
 =head2 Tassilo von Parseval
 
 Credits go to a number of people: Steve Purkis for giving me namespace advice
 and James Keenan and Terrence Branno for their effort of keeping the CPAN
-tidier by making L<List::Utils> obsolete.
+tidier by making L<List::Util> obsolete.
 
 Brian McCauley suggested the inclusion of apply() and provided the pure-Perl
 implementation for it.
@@ -867,14 +802,6 @@ array-reference. Suggested by Mark Summersault.
 =head1 SEE ALSO
 
 L<List::Util>, L<List::AllUtils>, L<List::UtilsBy>
-
-=head1 AUTHOR
-
-Jens Rehsack E<lt>rehsack AT cpan.orgE<gt>
-
-Adam Kennedy E<lt>adamk@cpan.orgE<gt>
-
-Tassilo von Parseval E<lt>tassilo.von.parseval@rwth-aachen.deE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
