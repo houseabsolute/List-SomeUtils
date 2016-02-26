@@ -4,96 +4,72 @@ use 5.006;
 use strict;
 use warnings;
 
-BEGIN
-{
-    our $VERSION = '0.413';
-}
+our $VERSION = '0.413';
 
 use Exporter::Tiny qw();
-use List::SomeUtils::XS qw();    # try loading XS
 
-my @junctions = qw(any all none notall);
-my @v0_22     = qw(
-  true false
-  firstidx lastidx
-  insert_after insert_after_string
-  apply indexes
-  after after_incl before before_incl
-  firstval lastval
-  each_array each_arrayref
-  pairwise natatime
-  mesh uniq
-  minmax part
+use Module::Implementation;
+
+my @subs = qw(
+    any all none notall
+    true false
+    firstidx lastidx
+    insert_after insert_after_string
+    apply indexes
+    after after_incl before before_incl
+    firstval lastval
+    each_array each_arrayref
+    pairwise natatime
+    mesh uniq
+    minmax part
+    bsearch
+    sort_by nsort_by
+    one any_u all_u none_u notall_u one_u
+    firstres onlyidx onlyval onlyres lastres
+    singleton bsearchidx
 );
-my @v0_24  = qw(bsearch);
-my @v0_33  = qw(sort_by nsort_by);
-my @v0_400 = qw(one any_u all_u none_u notall_u one_u
-  firstres onlyidx onlyval onlyres lastres
-  singleton bsearchidx
-);
 
-my @all_functions = ( @junctions, @v0_22, @v0_24, @v0_33, @v0_400 );
-
-my %alias_list = (
-    v0_22 => {
-        first_index => "firstidx",
-        last_index  => "lastidx",
-        first_value => "firstval",
-        last_value  => "lastval",
-        zip         => "mesh",
-    },
-    v0_33 => {
-        distinct => "uniq",
-    },
-    v0_400 => {
-        first_result  => "firstres",
-        only_index    => "onlyidx",
-        only_value    => "onlyval",
-        only_result   => "onlyres",
-        last_result   => "lastres",
-        bsearch_index => "bsearchidx",
-    },
+my %aliases = (
+    bsearch_index => 'bsearchidx',
+    distinct      => 'uniq',
+    first_index   => 'firstidx',
+    first_result  => 'firstres',
+    first_value   => 'firstval',
+    last_index    => 'lastidx',
+    last_result   => 'lastres',
+    last_value    => 'lastval',
+    only_index    => 'onlyidx',
+    only_result   => 'onlyres',
+    only_value    => 'onlyval',
+    zip           => 'mesh',
 );
 
 our @ISA         = qw(Exporter::Tiny);
-our @EXPORT_OK   = ( @all_functions, map { keys %$_ } values %alias_list );
-our %EXPORT_TAGS = (
-    all         => \@EXPORT_OK,
-    'like_0.22' => [
-        any_u    => { -as => 'any' },
-        all_u    => { -as => 'all' },
-        none_u   => { -as => 'none' },
-        notall_u => { -as => 'notall' },
-        @v0_22,
-        keys %{ $alias_list{v0_22} },
-    ],
-    'like_0.24' => [
-        any_u    => { -as => 'any' },
-        all_u    => { -as => 'all' },
-        notall_u => { -as => 'notall' },
-        'none',
-        @v0_22,
-        @v0_24,
-        keys %{ $alias_list{v0_22} },
-    ],
-    'like_0.33' => [
-        @junctions,
-        @v0_22,
-        # v0_24 functions were omitted
-        @v0_33,
-        keys %{ $alias_list{v0_22} },
-        keys %{ $alias_list{v0_33} },
-    ],
-);
+our @EXPORT_OK   = ( @subs, keys %aliases );
+our %EXPORT_TAGS = ( all => \@EXPORT_OK );
 
-for my $set ( values %alias_list )
 {
-    for my $alias ( keys %$set )
-    {
-        no strict qw(refs);
-        *$alias = __PACKAGE__->can( $set->{$alias} );
-    }
+    my $loader = Module::Implementation::build_loader_sub(
+        implementations => [ 'XS', 'PP' ],
+        symbols => \@subs,
+    );
+
+    $loader->();
 }
+
+use Scalar::Util;
+for my $alias ( keys %aliases ) {
+    no strict 'refs';
+    *{$alias} = __PACKAGE__->can( $aliases{$alias} );
+}
+
+sub _XScompiled {
+    return Module::Implementation::implementation_for(__PACKAGE__) eq 'XS';
+}
+
+1;
+
+__END__
 
 =pod
 
@@ -139,51 +115,12 @@ couldn't be compiled on this machine.
 
 =head2 Default behavior
 
-Nothing by default. To import all of this module's symbols use the C<:all> tag.
-Otherwise functions can be imported by name as usual:
+Nothing is exported by default. To import all of this module's symbols use the
+C<:all> tag.  Otherwise functions can be imported by name as usual:
 
     use List::SomeUtils ':all';
 
-    use List::SomeUtils qw{ any firstidx };
-
-Because historical changes to the API might make upgrading List::SomeUtils
-difficult for some projects, the legacy API is available via special import
-tags.
-
-=head2 Like version 0.22 (last release with original API)
-
-This API was available from 2006 to 2009, returning undef for empty lists on
-C<all>/C<any>/C<none>/C<notall>:
-
-    use List::SomeUtils ':like_0.22';
-
-This import tag will import all functions available as of version 0.22.
-However, it will import C<any_u> as C<any>, C<all_u> as C<all>, C<none_u> as
-C<none>, and C<notall_u> as C<notall>.
-
-=head2 Like version 0.24 (first incompatible change)
-
-This API was available from 2010 to 2011.  It changed the return value of C<none>
-and added the C<bsearch> function.
-
-    use List::SomeUtils ':like_0.24';
-
-This import tag will import all functions available as of version 0.24.
-However it will import C<any_u> as C<any>, C<all_u> as C<all>, and
-C<notall_u> as C<notall>.  It will import C<none> as described in
-the documentation below (true for empty list).
-
-=head2 Like version 0.33 (second incompatible change)
-
-This API was available from 2011 to 2014. It is widely used in several CPAN
-modules and thus it's closest to the current API.  It changed the return values
-of C<any>, C<all>, and C<notall>.  It added the C<sort_by> and C<nsort_by> functions
-and the C<distinct> alias for C<uniq>.  It omitted C<bsearch>.
-
-    use List::SomeUtils ':like_0.33';
-
-This import tag will import all functions available as of version 0.33.  Note:
-it will not import C<bsearch> for consistency with the 0.33 API.
+    use List::SomeUtils qw( any firstidx );
 
 =head1 FUNCTIONS
 
@@ -196,13 +133,9 @@ empty list:
 
 =over
 
-=item *
+=item * Reduction to an identity (boolean)
 
-Reduction to an identity (boolean)
-
-=item *
-
-Result is undefined (three-valued)
+=item * Result is undefined (three-valued)
 
 =back
 
@@ -956,5 +889,3 @@ it under the same terms as Perl itself, either Perl version 5.8.4 or,
 at your option, any later version of Perl 5 you may have available.
 
 =cut
-
-1;

@@ -6,19 +6,6 @@ use warnings;
 
 our $VERSION = '0.413';
 
-=pod
-
-=head1 NAME
-
-List::SomeUtils::PP - Provide List::SomeUtils pure Perl implementation
-
-=head1 SYNOPSIS
-
-  BEGIN { $ENV{LIST_MOREUTILS_PP} = 1; }
-  use List::SomeUtils qw(:all);
-
-=cut
-
 sub any (&@)
 {
     my $f = shift;
@@ -556,21 +543,13 @@ sub nsort_by(&@)
       map { [ $_, scalar( $code->() ) ] } @list;
 }
 
-sub _XScompiled { 0 }
+1;
 
-=head1 SEE ALSO
+# ABSTRACT: Pure Perl implementation for List::SomeUtils
 
-L<List::Util>
+__END__
 
-=head1 AUTHOR
-
-Jens Rehsack E<lt>rehsack AT cpan.orgE<gt>
-
-Adam Kennedy E<lt>adamk@cpan.orgE<gt>
-
-Tassilo von Parseval E<lt>tassilo.von.parseval@rwth-aachen.deE<gt>
-
-=head1 COPYRIGHT AND LICENSE
+=pod
 
 Some parts copyright 2011 Aaron Crane.
 
