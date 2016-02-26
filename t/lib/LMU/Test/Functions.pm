@@ -15,14 +15,6 @@ eval "use Scalar::Util qw(); \$have_scalar_util = 1;";
 
 eval "use Storable qw();";
 $@ or Storable->import(qw(freeze));
-__PACKAGE__->can("freeze") or eval <<'EOFR';
-use inc::latest 'JSON::PP';
-use JSON::PP qw();
-sub freeze {
-    my $json = JSON::PP->new();
-    $json->encode($_[0]);
-}
-EOFR
 
 # Run all tests
 sub run_tests {
