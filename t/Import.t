@@ -1,10 +1,12 @@
-#!perl
+use strict;
+use warnings;
 
-use lib ("t/lib");
-$ENV{LIST_MOREUTILS_PP} = 1;
-END { delete $ENV{LIST_MOREUTILS_PP} }    # for VMS
+use lib 't/lib';
 
-require LMU::Test::Import;
+BEGIN { $ENV{LIST_SOMEUTILS_IMPLEMENTATION} = 'PP' }
 
+use Test::More 0.96;
+
+use LMU::Test::Import;
 LMU::Test::Import->run_tests;
 

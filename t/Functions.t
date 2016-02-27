@@ -1,10 +1,10 @@
-#!perl
+use strict;
+use warnings;
 
-use lib ("t/lib");
-$ENV{LIST_MOREUTILS_PP} = 1;
-END { delete $ENV{LIST_MOREUTILS_PP} }    # for VMS
+use lib 't/lib';
 
-require LMU::Test::Functions;
+BEGIN { $ENV{LIST_SOMEUTILS_IMPLEMENTATION} = 'PP' }
 
+use LMU::Test::Functions;
 LMU::Test::Functions->run_tests;
 
