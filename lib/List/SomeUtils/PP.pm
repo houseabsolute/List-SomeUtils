@@ -551,6 +551,10 @@ __END__
 
 =pod
 
+=head1 DESCRIPTION
+
+There are no user-facing parts here. See L<List::SomeUtils> for API details.
+
 =head1 HISTORICAL COPYRIGHT
 
 Some parts copyright 2011 Aaron Crane.
@@ -560,5 +564,3 @@ Copyright 2004 - 2010 by Tassilo von Parseval
 Copyright 2013 - 2015 by Jens Rehsack
 
 =cut
-
-1;
