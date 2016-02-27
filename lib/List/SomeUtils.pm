@@ -51,7 +51,7 @@ our %EXPORT_TAGS = ( all => \@EXPORT_OK );
 {
     my $loader = Module::Implementation::build_loader_sub(
         implementations => [ 'XS', 'PP' ],
-        symbols => \@subs,
+        symbols         => \@subs,
     );
 
     $loader->();
