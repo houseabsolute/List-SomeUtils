@@ -107,7 +107,7 @@ You might wonder why this module exists when we already have
 L<List::MoreUtils>. In fact, this module is the same code as is found in LMU
 with no significant changes. However, the LMU distribution depends on several
 modules for configuration (to run the Makefile.PL) that some folks in the Perl
-community don't think are appopriate for a module high upstream in the CPAN
+community don't think are appropriate for a module high upstream in the CPAN
 river.
 
 I (Dave Rolsky) don't have a strong opinion on this, but I I<do> like the
