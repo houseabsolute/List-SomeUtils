@@ -1,4 +1,4 @@
-package LMU::Test::XS;
+package LSU::Test::XS;
 
 use strict;
 

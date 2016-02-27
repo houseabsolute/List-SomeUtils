@@ -1,10 +1,10 @@
-package LMU::Test::Functions;
+package LSU::Test::Functions;
 
 use strict;
 use warnings;
 
 use Test::More;
-use Test::LMU;
+use Test::LSU;
 use Tie::Array ();
 use List::SomeUtils ':all';
 

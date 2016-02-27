@@ -1,4 +1,4 @@
-package LMU::Test::Import;
+package LSU::Test::Import;
 
 use strict;
 

@@ -1,4 +1,4 @@
-package Test::LMU;
+package Test::LSU;
 
 use strict;
 

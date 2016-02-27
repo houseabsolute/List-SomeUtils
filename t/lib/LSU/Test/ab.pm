@@ -1,4 +1,4 @@
-package LMU::Test::ab;
+package LSU::Test::ab;
 
 use strict;
 
