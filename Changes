@@ -1,6 +1,7 @@
 Revision history for Perl extension List-SomeUtils
 
 {{$NEXT}
+    - No code changes. The last release was missing a Changes entry.
 
 0.50    2016-02-27
     - This is List::MoreUtils under a different name with fewer configure-time
