@@ -1,6 +1,8 @@
 Revision history for Perl extension List-SomeUtils
 
-{{$NEXT}
+{{$NEXT}}
+
+0.51     2016-02-27
     - No code changes. The last release was missing a Changes entry.
 
 0.50    2016-02-27
