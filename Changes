@@ -1,5 +1,13 @@
 Revision history for Perl extension List-SomeUtils
 
+{{$NEXT}
+
+0.50    2016-02-27
+    - This is List::MoreUtils under a different name with fewer configure-time
+      prereqs.
+    - The "import as old versions" feature present in LMU does not exist in
+      this distribution.
+
 0.413	2015-06-10
     - Fix compiling in c++ mode (depreciated, but some people seem to
       require it). Solves RT#104690
