@@ -25,11 +25,12 @@ on 'test' => sub {
 };
 
 on 'configure' => sub {
-  requires "ExtUtils::HasCompiler" => "0";
   requires "ExtUtils::MakeMaker" => "0";
+  requires "Text::ParseWords" => "0";
 };
 
 on 'develop' => sub {
+  requires "ExtUtils::HasCompiler" => "0.014";
   requires "File::Spec" => "0";
   requires "IO::Handle" => "0";
   requires "IPC::Open3" => "0";
