@@ -30,14 +30,13 @@ on 'configure' => sub {
 };
 
 on 'develop' => sub {
-  requires "Code::TidyAll" => "0.24";
-  requires "Dist::Zilla::Plugin::MakeMaker::Awesome" => "0";
   requires "File::Spec" => "0";
   requires "IO::Handle" => "0";
   requires "IPC::Open3" => "0";
-  requires "Perl::Critic" => "1.123";
-  requires "Perl::Tidy" => "20140711";
+  requires "Perl::Critic" => "1.126";
+  requires "Perl::Tidy" => "20160302";
   requires "Pod::Coverage::TrustPod" => "0";
+  requires "Pod::Wordlist" => "0";
   requires "Scalar::Util" => "0";
   requires "Storable" => "0";
   requires "Test::CPAN::Changes" => "0.19";
@@ -46,7 +45,7 @@ on 'develop' => sub {
   requires "Test::EOL" => "0";
   requires "Test::LeakTrace" => "0";
   requires "Test::Mojibake" => "0";
-  requires "Test::More" => "0.88";
+  requires "Test::More" => "0.96";
   requires "Test::NoTabs" => "0";
   requires "Test::Pod" => "1.41";
   requires "Test::Pod::Coverage" => "1.08";
@@ -56,4 +55,5 @@ on 'develop' => sub {
   requires "Test::Synopsis" => "0";
   requires "Test::Version" => "1";
   requires "Tie::Array" => "0";
+  requires "blib" => "1.01";
 };

@@ -5,29 +5,19 @@ List::SomeUtils - Provide the stuff missing in List::Util
 # SYNOPSIS
 
     # import specific functions
+    use List::SomeUtils qw( any uniq );
 
-    use List::SomeUtils qw(any uniq);
-
-    if ( any { /foo/ } uniq @has_duplicates ) {
+    my @values = qw( foo bar baz );
+    if ( any {/foo/} @values ) {
         # do stuff
     }
 
     # import everything
-
     use List::SomeUtils ':all';
-
-    # import by API
-
-    # has "original" any/all/none/notall behavior
-    use List::SomeUtils ':like_0.22';
-    # 0.22 + bsearch
-    use List::SomeUtils ':like_0.24';
-    # has "simplified" any/all/none/notall behavior + (n)sort_by
-    use List::SomeUtils ':like_0.33';
 
 # DESCRIPTION
 
-__List::SomeUtils__ provides some trivial but commonly needed functionality on
+**List::SomeUtils** provides some trivial but commonly needed functionality on
 lists which is not going to go into [List::Util](https://metacpan.org/pod/List::Util).
 
 All of the below functions are implementable in only a couple of lines of Perl
@@ -36,55 +26,32 @@ performance as everything is implemented in C. The pure-Perl implementation of
 these functions only serves as a fallback in case the C portions of this module
 couldn't be compiled on this machine.
 
+# WHY DOES THIS MODULE EXIST?
+
+You might wonder why this module exists when we already have
+[List::MoreUtils](https://metacpan.org/pod/List::MoreUtils). In fact, this module is the same code as is found in LMU
+with no significant changes. However, the LMU distribution depends on several
+modules for configuration (to run the Makefile.PL) that some folks in the Perl
+community don't think are appropriate for a module high upstream in the CPAN
+river.
+
+I (Dave Rolsky) don't have a strong opinion on this, but I _do_ like the
+functions provided by LMU, and I'm tired of getting patches and PRs to remove
+it from my code.
+
+This distribution exists to let me use the functionality I like without having
+to get into tiring arguments about issues I don't really care about.
+
 # EXPORTS
 
 ## Default behavior
 
-Nothing by default. To import all of this module's symbols use the `:all` tag.
-Otherwise functions can be imported by name as usual:
+Nothing is exported by default. To import all of this module's symbols use the
+`:all` tag. Otherwise functions can be imported by name as usual:
 
     use List::SomeUtils ':all';
 
-    use List::SomeUtils qw{ any firstidx };
-
-Because historical changes to the API might make upgrading List::SomeUtils
-difficult for some projects, the legacy API is available via special import
-tags.
-
-## Like version 0.22 (last release with original API)
-
-This API was available from 2006 to 2009, returning undef for empty lists on
-`all`/`any`/`none`/`notall`:
-
-    use List::SomeUtils ':like_0.22';
-
-This import tag will import all functions available as of version 0.22.
-However, it will import `any_u` as `any`, `all_u` as `all`, `none_u` as
-`none`, and `notall_u` as `notall`.
-
-## Like version 0.24 (first incompatible change)
-
-This API was available from 2010 to 2011.  It changed the return value of `none`
-and added the `bsearch` function.
-
-    use List::SomeUtils ':like_0.24';
-
-This import tag will import all functions available as of version 0.24.
-However it will import `any_u` as `any`, `all_u` as `all`, and
-`notall_u` as `notall`.  It will import `none` as described in
-the documentation below (true for empty list).
-
-## Like version 0.33 (second incompatible change)
-
-This API was available from 2011 to 2014. It is widely used in several CPAN
-modules and thus it's closest to the current API.  It changed the return values
-of `any`, `all`, and `notall`.  It added the `sort_by` and `nsort_by` functions
-and the `distinct` alias for `uniq`.  It omitted `bsearch`.
-
-    use List::SomeUtils ':like_0.33';
-
-This import tag will import all functions available as of version 0.33.  Note:
-it will not import `bsearch` for consistency with the 0.33 API.
+    use List::SomeUtils qw( any firstidx );
 
 # FUNCTIONS
 
@@ -100,7 +67,7 @@ empty list:
 
 In the first case, the result of the junction applied to the empty list is
 determined by a mathematical reduction to an identity depending on whether
-the underlying comparison is "or" or "and".  Conceptually:
+the underlying comparison is "or" or "and". Conceptually:
 
                     "any are true"      "all are true"
                     --------------      --------------
@@ -108,10 +75,10 @@ the underlying comparison is "or" or "and".  Conceptually:
     1 element:      A || 0              A && 1
     0 elements:     0                   1
 
-In the second case, three-value logic is desired, in which a junction
-applied to an empty list returns `undef` rather than true or false 
+In the second case, three-value logic is desired, in which a junction applied
+to an empty list returns `undef` rather than true or false.
 
-Junctions with a `_u` suffix implement three-valued logic.  Those
+Junctions with a `_u` suffix implement three-valued logic. Those
 without are boolean.
 
 ### all BLOCK LIST
@@ -129,7 +96,7 @@ and `all_u` returns `undef`.
 
 Thus, `all_u(@list)` is equivalent to `@list ? all(@list) : undef`.
 
-__Note__: because Perl treats `undef` as false, you must check the return value
+**Note**: because Perl treats `undef` as false, you must check the return value
 of `all_u` with `defined` or you will get the opposite result of what you
 expect.
 
@@ -162,7 +129,7 @@ and `none_u` returns `undef`.
 
 Thus, `none_u(@list)` is equivalent to `@list ? none(@list) : undef`.
 
-__Note__: because Perl treats `undef` as false, you must check the return value
+**Note**: because Perl treats `undef` as false, you must check the return value
 of `none_u` with `defined` or you will get the opposite result of what you
 expect.
 
@@ -181,12 +148,30 @@ For an empty LIST, `notall` returns false and `notall_u` returns `undef`.
 
 Thus, `notall_u(@list)` is equivalent to `@list ? notall(@list) : undef`.
 
+### one BLOCK LIST
+
+### one\_u BLOCK LIST
+
+Returns a true value if precisely one item in LIST meets the criterion
+given through BLOCK. Sets `$_` for each item in LIST in turn:
+
+    print "Precisely one value defined"
+        if one { defined($_) } @list;
+
+Returns false otherwise.
+
+For an empty LIST, `one` returns false and `one_u` returns `undef`.
+
+The expression `one BLOCK LIST` is almost equivalent to
+`1 == true BLOCK LIST`, except for short-cutting.
+Evaluation of BLOCK will immediately stop at the second true value.
+
 ## Transformation
 
 ### apply BLOCK LIST
 
 Applies BLOCK to each item in LIST and returns a list of the values after BLOCK
-has been applied. In scalar context, the last element is returned.  This
+has been applied. In scalar context, the last element is returned. This
 function is similar to `map` but will not modify the elements of the input
 list:
 
@@ -215,7 +200,7 @@ true. Sets `$_` for each item in LIST in turn.
 
 ### insert\_after\_string STRING VALUE LIST
 
-Inserts VALUE after the first item in LIST which is equal to STRING. 
+Inserts VALUE after the first item in LIST which is equal to STRING.
 
     my @list = qw/This is a list/;
     insert_after_string "a", "longer" => @list;
@@ -227,7 +212,7 @@ Inserts VALUE after the first item in LIST which is equal to STRING.
 
 Evaluates BLOCK for each pair of elements in ARRAY1 and ARRAY2 and returns a
 new list consisting of BLOCK's return values. The two elements are set to `$a`
-and `$b`.  Note that those two are aliases to the original value so changing
+and `$b`. Note that those two are aliases to the original value so changing
 them will modify the input arrays.
 
     @a = (1 .. 5);
@@ -263,14 +248,32 @@ Examples:
 
 ### distinct LIST
 
-Returns a new list by stripping duplicate values in LIST. The order of
-elements in the returned list is the same as in LIST. In scalar context,
-returns the number of unique elements in LIST.
+Returns a new list by stripping duplicate values in LIST by comparing
+the values as hash keys, except that undef is considered separate from ''.
+The order of elements in the returned list is the same as in LIST. In
+scalar context, returns the number of unique elements in LIST.
 
     my @x = uniq 1, 1, 2, 2, 3, 5, 3, 4; # returns 1 2 3 5 4
     my $x = uniq 1, 1, 2, 2, 3, 5, 3, 4; # returns 5
+    # returns "Mike", "Michael", "Richard", "Rick"
+    my @n = distinct "Mike", "Michael", "Richard", "Rick", "Michael", "Rick"
+    # returns '', 'S1', A5' and complains about "Use of uninitialized value"
+    my @s = distinct '', undef, 'S1', 'A5'
+    # returns undef, 'S1', A5' and complains about "Use of uninitialized value"
+    my @w = uniq undef, '', 'S1', 'A5'
 
 `distinct` is an alias for `uniq`.
+
+**RT#49800** can be used to give feedback about this behavior.
+
+### singleton
+
+Returns a new list by stripping values in LIST occurring more than once by
+comparing the values as hash keys, except that undef is considered separate
+from ''. The order of elements in the returned list is the same as in LIST.
+In scalar context, returns the number of elements occurring only once in LIST.
+
+    my @x = singleton 1,1,2,2,3,4,5 # returns 3 4 5
 
 ## Partitioning
 
@@ -327,9 +330,9 @@ Negative values are only ok when they refer to a partition previously created:
 ### each\_array ARRAY1 ARRAY2 ...
 
 Creates an array iterator to return the elements of the list of arrays ARRAY1,
-ARRAY2 throughout ARRAYn in turn.  That is, the first time it is called, it
-returns the first element of each array.  The next time, it returns the second
-elements.  And so on, until all elements are exhausted.
+ARRAY2 throughout ARRAYn in turn. That is, the first time it is called, it
+returns the first element of each array. The next time, it returns the second
+elements. And so on, until all elements are exhausted.
 
 This is useful for looping over more than one array at once:
 
@@ -349,7 +352,7 @@ plain arrays.
 ### natatime EXPR, LIST
 
 Creates an array iterator, for looping over an array in chunks of
-`$n` items at a time.  (n at a time, get it?).  An example is
+`$n` items at a time. (n at a time, get it?). An example is
 probably a better explanation than I could give in words.
 
 Example:
@@ -378,6 +381,18 @@ a positive value if it is bigger and zero if it matches.
 Returns a boolean value in scalar context. In list context, it returns the element
 if it was found, otherwise the empty list.
 
+### bsearchidx BLOCK LIST
+
+### bsearch\_index BLOCK LIST
+
+Performs a binary search on LIST which must be a sorted list of values. BLOCK
+must return a negative value if the current element (stored in `$_`) is smaller,
+a positive value if it is bigger and zero if it matches.
+
+Returns the index of found element, otherwise `-1`.
+
+`bsearch_index` is an alias for `bsearchidx`.
+
 ### firstval BLOCK LIST
 
 ### first\_value BLOCK LIST
@@ -388,6 +403,16 @@ has been found.
 
 `first_value` is an alias for `firstval`.
 
+### onlyval BLOCK LIST
+
+### only\_value BLOCK LIST
+
+Returns the only element in LIST for which BLOCK evaluates to true. Sets
+`$_` for each item in LIST in turn. Returns `undef` if no such element
+has been found.
+
+`only_value` is an alias for `onlyval`.
+
 ### lastval BLOCK LIST
 
 ### last\_value BLOCK LIST
@@ -397,6 +422,36 @@ of LIST is set to `$_` in turn. Returns `undef` if no such element has been
 found.
 
 `last_value` is an alias for `lastval`.
+
+### firstres BLOCK LIST
+
+### first\_result BLOCK LIST
+
+Returns the result of BLOCK for the first element in LIST for which BLOCK
+evaluates to true. Each element of LIST is set to `$_` in turn. Returns
+`undef` if no such element has been found.
+
+`first_result` is an alias for `firstres`.
+
+### onlyres BLOCK LIST
+
+### only\_result BLOCK LIST
+
+Returns the result of BLOCK for the first element in LIST for which BLOCK
+evaluates to true. Sets `$_` for each item in LIST in turn. Returns
+`undef` if no such element has been found.
+
+`only_result` is an alias for `onlyres`.
+
+### lastres BLOCK LIST
+
+### last\_result BLOCK LIST
+
+Returns the result of BLOCK for the last element in LIST for which BLOCK
+evaluates to true. Each element of LIST is set to `$_` in turn. Returns
+`undef` if no such element has been found.
+
+`last_result` is an alias for `lastres`.
 
 ### indexes BLOCK LIST
 
@@ -417,11 +472,27 @@ is true. Sets `$_` for each item in LIST in turn:
     printf "item with index %i in list is 4", firstidx { $_ == 4 } @list;
     __END__
     item with index 1 in list is 4
-      
 
 Returns `-1` if no such item could be found.
 
 `first_index` is an alias for `firstidx`.
+
+### onlyidx BLOCK LIST
+
+### only\_index BLOCK LIST
+
+Returns the index of the only element in LIST for which the criterion
+in BLOCK is true. Sets `$_` for each item in LIST in turn:
+
+    my @list = (1, 3, 4, 3, 2, 4);
+    printf "uniqe index of item 2 in list is %i", onlyidx { $_ == 2 } @list;
+    __END__
+    unique index of item 2 in list is 4
+
+Returns `-1` if either no such item or more than one of these
+has been found.
+
+`only_index` is an alias for `onlyidx`.
 
 ### lastidx BLOCK LIST
 
@@ -502,19 +573,11 @@ that there are more lines of Perl code involved. Therefore, LIST needs to be
 fairly big in order for `minmax` to win over a naive implementation. This
 limitation does not apply to the XS version.
 
-# ENVIRONMENT
-
-When `LIST_MOREUTILS_PP` is set, the module will always use the pure-Perl
-implementation and not the XS one. This environment variable is really just
-there for the test-suite to force testing the Perl implementation, and possibly
-for reporting of bugs. I don't see any reason to use it in a production
-environment.
-
 # MAINTENANCE
 
 The maintenance goal is to preserve the documented semantics of the API;
 bug fixes that bring actual behavior in line with semantics are allowed.
-New API functions may be added over time.  If a backwards incompatible
+New API functions may be added over time. If a backwards incompatible
 change is unavoidable, we will attempt to provide support for the legacy
 API using the same export tag mechanism currently in place.
 
@@ -549,81 +612,20 @@ output of your program with the environment variable `LIST_MOREUTILS_PP` set
 to a true value. That way I know where to look for the problem (in XS,
 pure-Perl or possibly both).
 
-# SUPPORT
+# BUGS
 
-Bugs should always be submitted via the CPAN bug tracker.
+Please report any bugs or feature requests to
+`bug-list-someutils@rt.cpan.org`, or through the web interface at
+[http://rt.cpan.org](http://rt.cpan.org). I will be notified, and then you'll automatically be
+notified of progress on your bug as I make changes.
 
-You can find documentation for this module with the perldoc command.
-
-    perldoc List::SomeUtils
-
-You can also look for information at:
-
-- RT: CPAN's request tracker
-
-    [http://rt.cpan.org/NoAuth/Bugs.html?Dist=List-SomeUtils](http://rt.cpan.org/NoAuth/Bugs.html?Dist=List-SomeUtils)
-
-- AnnoCPAN: Annotated CPAN documentation
-
-    [http://annocpan.org/dist/List-SomeUtils](http://annocpan.org/dist/List-SomeUtils)
-
-- CPAN Ratings
-
-    [http://cpanratings.perl.org/l/List-SomeUtils](http://cpanratings.perl.org/l/List-SomeUtils)
-
-- CPAN Search
-
-    [http://search.cpan.org/dist/List-SomeUtils/](http://search.cpan.org/dist/List-SomeUtils/)
-
-- Git Repository
-
-    [https://github.com/perl5-utils/List-SomeUtils](https://github.com/perl5-utils/List-SomeUtils)
-
-## Where can I go for help?
-
-If you have a bug report, a patch or a suggestion, please open a new
-report ticket at CPAN (but please check previous reports first in case
-your issue has already been addressed) or open an issue on GitHub.
-
-Report tickets should contain a detailed description of the bug or
-enhancement request and at least an easily verifiable way of
-reproducing the issue or fix. Patches are always welcome, too - and
-it's cheap to send pull-requests on GitHub. Please keep in mind that
-code changes are more likely accepted when they're bundled with an
-approving test.
-
-If you think you've found a bug then please read
-"How to Report Bugs Effectively" by Simon Tatham:
-[http://www.chiark.greenend.org.uk/~sgtatham/bugs.html](http://www.chiark.greenend.org.uk/~sgtatham/bugs.html).
-
-## Where can I go for help with a concrete version?
-
-Bugs and feature requests are accepted against the latest version
-only. To get patches for earlier versions, you need to get an
-agreement with a developer of your choice - who may or not report the
-issue and a suggested fix upstream (depends on the license you have
-chosen).
-
-## Business support and maintenance
-
-Generally, in volunteered projects, there is no right for support.
-While every maintainer is happy to improve the provided software,
-spare time is limited.
-
-For those who have a use case which requires guaranteed support, one of
-the maintainers should be hired or contracted.  For business support you
-can contact Jens via his CPAN email address rehsackATcpan.org. Please
-keep in mind that business support is neither available for free nor
-are you eligible to receive any support based on the license distributed
-with this package.
-
-# THANKS
+# CREDITS
 
 ## Tassilo von Parseval
 
 Credits go to a number of people: Steve Purkis for giving me namespace advice
 and James Keenan and Terrence Branno for their effort of keeping the CPAN
-tidier by making [List::Utils](https://metacpan.org/pod/List::Utils) obsolete.
+tidier by making [List::Util](https://metacpan.org/pod/List::Util) obsolete.
 
 Brian McCauley suggested the inclusion of apply() and provided the pure-Perl
 implementation for it.
@@ -672,11 +674,6 @@ package history.
 A pile of requests from other people is still pending further processing in
 my mailbox. This includes:
 
-- List::Util export pass-through
-
-    Allow __List::SomeUtils__ to pass-through the regular [List::Util](https://metacpan.org/pod/List::Util)
-    functions to end users only need to `use` the one module.
-
 - uniq\_by(&@)
 
     Use code-reference to extract a key based on which the uniqueness is
@@ -701,22 +698,10 @@ my mailbox. This includes:
 
 [List::Util](https://metacpan.org/pod/List::Util), [List::AllUtils](https://metacpan.org/pod/List::AllUtils), [List::UtilsBy](https://metacpan.org/pod/List::UtilsBy)
 
-# AUTHOR
-
-Jens Rehsack <rehsack AT cpan.org>
-
-Adam Kennedy <adamk@cpan.org>
-
-Tassilo von Parseval <tassilo.von.parseval@rwth-aachen.de>
-
-# COPYRIGHT AND LICENSE
+# HISTORICAL COPYRIGHT
 
 Some parts copyright 2011 Aaron Crane.
 
 Copyright 2004 - 2010 by Tassilo von Parseval
 
 Copyright 2013 - 2015 by Jens Rehsack
-
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself, either Perl version 5.8.4 or,
-at your option, any later version of Perl 5 you may have available.
