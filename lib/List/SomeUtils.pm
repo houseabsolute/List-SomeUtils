@@ -84,8 +84,8 @@ List::SomeUtils - Provide the stuff missing in List::Util
     # import specific functions
     use List::SomeUtils qw( any uniq );
 
-    my @values = qw( foo bar baz );
-    if ( any {/foo/} @values ) {
+    if ( any {/foo/} uniq @has_duplicates ) {
+
         # do stuff
     }
 
@@ -123,12 +123,16 @@ to get into tiring arguments about issues I don't really care about.
 
 =head2 Default behavior
 
-Nothing is exported by default. To import all of this module's symbols use the
-C<:all> tag. Otherwise functions can be imported by name as usual:
+Nothing by default. To import all of this module's symbols use the C<:all> tag.
+Otherwise functions can be imported by name as usual:
 
     use List::SomeUtils ':all';
 
-    use List::SomeUtils qw( any firstidx );
+    use List::SomeUtils qw{ any firstidx };
+
+Because historical changes to the API might make upgrading List::SomeUtils
+difficult for some projects, the legacy API is available via special import
+tags.
 
 =head1 FUNCTIONS
 
@@ -141,15 +145,19 @@ empty list:
 
 =over
 
-=item * Reduction to an identity (boolean)
+=item *
 
-=item * Result is undefined (three-valued)
+Reduction to an identity (boolean)
+
+=item *
+
+Result is undefined (three-valued)
 
 =back
 
 In the first case, the result of the junction applied to the empty list is
 determined by a mathematical reduction to an identity depending on whether
-the underlying comparison is "or" or "and". Conceptually:
+the underlying comparison is "or" or "and".  Conceptually:
 
                     "any are true"      "all are true"
                     --------------      --------------
@@ -157,10 +165,10 @@ the underlying comparison is "or" or "and". Conceptually:
     1 element:      A || 0              A && 1
     0 elements:     0                   1
 
-In the second case, three-value logic is desired, in which a junction applied
-to an empty list returns C<undef> rather than true or false.
+In the second case, three-value logic is desired, in which a junction
+applied to an empty list returns C<undef> rather than true or false 
 
-Junctions with a C<_u> suffix implement three-valued logic. Those
+Junctions with a C<_u> suffix implement three-valued logic.  Those
 without are boolean.
 
 =head3 all BLOCK LIST
@@ -253,7 +261,7 @@ Evaluation of BLOCK will immediately stop at the second true value.
 =head3 apply BLOCK LIST
 
 Applies BLOCK to each item in LIST and returns a list of the values after BLOCK
-has been applied. In scalar context, the last element is returned. This
+has been applied. In scalar context, the last element is returned.  This
 function is similar to C<map> but will not modify the elements of the input
 list:
 
@@ -282,7 +290,7 @@ true. Sets C<$_> for each item in LIST in turn.
 
 =head3 insert_after_string STRING VALUE LIST
 
-Inserts VALUE after the first item in LIST which is equal to STRING.
+Inserts VALUE after the first item in LIST which is equal to STRING. 
 
   my @list = qw/This is a list/;
   insert_after_string "a", "longer" => @list;
@@ -294,7 +302,7 @@ Inserts VALUE after the first item in LIST which is equal to STRING.
 
 Evaluates BLOCK for each pair of elements in ARRAY1 and ARRAY2 and returns a
 new list consisting of BLOCK's return values. The two elements are set to C<$a>
-and C<$b>. Note that those two are aliases to the original value so changing
+and C<$b>.  Note that those two are aliases to the original value so changing
 them will modify the input arrays.
 
   @a = (1 .. 5);
@@ -352,7 +360,7 @@ B<RT#49800> can be used to give feedback about this behavior.
 
 Returns a new list by stripping values in LIST occurring more than once by
 comparing the values as hash keys, except that undef is considered separate
-from ''. The order of elements in the returned list is the same as in LIST.
+from ''.  The order of elements in the returned list is the same as in LIST.
 In scalar context, returns the number of elements occurring only once in LIST.
 
   my @x = singleton 1,1,2,2,3,4,5 # returns 3 4 5
@@ -412,9 +420,9 @@ Negative values are only ok when they refer to a partition previously created:
 =head3 each_array ARRAY1 ARRAY2 ...
 
 Creates an array iterator to return the elements of the list of arrays ARRAY1,
-ARRAY2 throughout ARRAYn in turn. That is, the first time it is called, it
-returns the first element of each array. The next time, it returns the second
-elements. And so on, until all elements are exhausted.
+ARRAY2 throughout ARRAYn in turn.  That is, the first time it is called, it
+returns the first element of each array.  The next time, it returns the second
+elements.  And so on, until all elements are exhausted.
 
 This is useful for looping over more than one array at once:
 
@@ -434,7 +442,7 @@ plain arrays.
 =head3 natatime EXPR, LIST
 
 Creates an array iterator, for looping over an array in chunks of
-C<$n> items at a time. (n at a time, get it?). An example is
+C<$n> items at a time.  (n at a time, get it?).  An example is
 probably a better explanation than I could give in words.
 
 Example:
@@ -659,7 +667,7 @@ limitation does not apply to the XS version.
 
 The maintenance goal is to preserve the documented semantics of the API;
 bug fixes that bring actual behavior in line with semantics are allowed.
-New API functions may be added over time. If a backwards incompatible
+New API functions may be added over time.  If a backwards incompatible
 change is unavoidable, we will attempt to provide support for the legacy
 API using the same export tag mechanism currently in place.
 
@@ -694,25 +702,18 @@ output of your program with the environment variable C<LIST_MOREUTILS_PP> set
 to a true value. That way I know where to look for the problem (in XS,
 pure-Perl or possibly both).
 
-=head1 BUGS
-
-Please report any bugs or feature requests to
-C<bug-list-someutils@rt.cpan.org>, or through the web interface at
-L<http://rt.cpan.org>. I will be notified, and then you'll automatically be
-notified of progress on your bug as I make changes.
-
-=head1 CREDITS
+=head1 THANKS
 
 =head2 Tassilo von Parseval
 
 Credits go to a number of people: Steve Purkis for giving me namespace advice
 and James Keenan and Terrence Branno for their effort of keeping the CPAN
-tidier by making L<List::Util> obsolete.
+tidier by making L<List::Utils> obsolete.
 
 Brian McCauley suggested the inclusion of apply() and provided the pure-Perl
 implementation for it.
 
-Eric J. Roode asked me to add all functions from his module C<List::MoreUtil>
+Eric J. Roode asked me to add all functions from his module C<List::SomeUtil>
 into this one. With minor modifications, the pure-Perl implementations of those
 are by him.
 
@@ -757,6 +758,11 @@ A pile of requests from other people is still pending further processing in
 my mailbox. This includes:
 
 =over 4
+
+=item * List::Util export pass-through
+
+Allow B<List::SomeUtils> to pass-through the regular L<List::Util>
+functions to end users only need to C<use> the one module.
 
 =item * uniq_by(&@)
 
