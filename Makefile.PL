@@ -22,6 +22,7 @@ my %WriteMakefileArgs = (
     "Exporter::Tiny" => 0,
     "Module::Implementation" => 0,
     "Scalar::Util" => 0,
+    "parent" => 0,
     "strict" => 0,
     "vars" => 0,
     "warnings" => 0
@@ -60,13 +61,14 @@ my %FallbackPrereqs = (
   "base" => 0,
   "lib" => 0,
   "overload" => 0,
+  "parent" => 0,
   "strict" => 0,
   "vars" => 0,
   "warnings" => 0
 );
 
-# inserted by Dist::Zilla::Plugin::DynamicPrereqs 0.028
-requires('List::SomeUtils::XS', '0') if !want_pp() and can_xs();
+# inserted by Dist::Zilla::Plugin::DynamicPrereqs 0.029
+requires('List::SomeUtils::XS', '0.52') if !want_pp() and can_xs();
 
 
 unless ( eval { ExtUtils::MakeMaker->VERSION(6.63_03) } ) {
@@ -80,7 +82,7 @@ delete $WriteMakefileArgs{CONFIGURE_REQUIRES}
 
 WriteMakefile(%WriteMakefileArgs);
 
-# inserted by Dist::Zilla::Plugin::DynamicPrereqs 0.028
+# inserted by Dist::Zilla::Plugin::DynamicPrereqs 0.029
 sub _add_prereq {
   my ($mm_key, $module, $version_or_range) = @_;
   warn "$module already exists in $mm_key -- need to do a sane metamerge!"

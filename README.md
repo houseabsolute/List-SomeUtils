@@ -2,13 +2,17 @@
 
 List::SomeUtils - Provide the stuff missing in List::Util
 
+# VERSION
+
+version 0.52
+
 # SYNOPSIS
 
     # import specific functions
     use List::SomeUtils qw( any uniq );
 
-    my @values = qw( foo bar baz );
-    if ( any {/foo/} @values ) {
+    if ( any {/foo/} uniq @has_duplicates ) {
+
         # do stuff
     }
 
@@ -46,12 +50,16 @@ to get into tiring arguments about issues I don't really care about.
 
 ## Default behavior
 
-Nothing is exported by default. To import all of this module's symbols use the
-`:all` tag. Otherwise functions can be imported by name as usual:
+Nothing by default. To import all of this module's symbols use the `:all` tag.
+Otherwise functions can be imported by name as usual:
 
     use List::SomeUtils ':all';
 
-    use List::SomeUtils qw( any firstidx );
+    use List::SomeUtils qw{ any firstidx };
+
+Because historical changes to the API might make upgrading List::SomeUtils
+difficult for some projects, the legacy API is available via special import
+tags.
 
 # FUNCTIONS
 
@@ -67,7 +75,7 @@ empty list:
 
 In the first case, the result of the junction applied to the empty list is
 determined by a mathematical reduction to an identity depending on whether
-the underlying comparison is "or" or "and". Conceptually:
+the underlying comparison is "or" or "and".  Conceptually:
 
                     "any are true"      "all are true"
                     --------------      --------------
@@ -75,10 +83,10 @@ the underlying comparison is "or" or "and". Conceptually:
     1 element:      A || 0              A && 1
     0 elements:     0                   1
 
-In the second case, three-value logic is desired, in which a junction applied
-to an empty list returns `undef` rather than true or false.
+In the second case, three-value logic is desired, in which a junction
+applied to an empty list returns `undef` rather than true or false
 
-Junctions with a `_u` suffix implement three-valued logic. Those
+Junctions with a `_u` suffix implement three-valued logic.  Those
 without are boolean.
 
 ### all BLOCK LIST
@@ -171,7 +179,7 @@ Evaluation of BLOCK will immediately stop at the second true value.
 ### apply BLOCK LIST
 
 Applies BLOCK to each item in LIST and returns a list of the values after BLOCK
-has been applied. In scalar context, the last element is returned. This
+has been applied. In scalar context, the last element is returned.  This
 function is similar to `map` but will not modify the elements of the input
 list:
 
@@ -212,7 +220,7 @@ Inserts VALUE after the first item in LIST which is equal to STRING.
 
 Evaluates BLOCK for each pair of elements in ARRAY1 and ARRAY2 and returns a
 new list consisting of BLOCK's return values. The two elements are set to `$a`
-and `$b`. Note that those two are aliases to the original value so changing
+and `$b`.  Note that those two are aliases to the original value so changing
 them will modify the input arrays.
 
     @a = (1 .. 5);
@@ -270,7 +278,7 @@ scalar context, returns the number of unique elements in LIST.
 
 Returns a new list by stripping values in LIST occurring more than once by
 comparing the values as hash keys, except that undef is considered separate
-from ''. The order of elements in the returned list is the same as in LIST.
+from ''.  The order of elements in the returned list is the same as in LIST.
 In scalar context, returns the number of elements occurring only once in LIST.
 
     my @x = singleton 1,1,2,2,3,4,5 # returns 3 4 5
@@ -330,9 +338,9 @@ Negative values are only ok when they refer to a partition previously created:
 ### each\_array ARRAY1 ARRAY2 ...
 
 Creates an array iterator to return the elements of the list of arrays ARRAY1,
-ARRAY2 throughout ARRAYn in turn. That is, the first time it is called, it
-returns the first element of each array. The next time, it returns the second
-elements. And so on, until all elements are exhausted.
+ARRAY2 throughout ARRAYn in turn.  That is, the first time it is called, it
+returns the first element of each array.  The next time, it returns the second
+elements.  And so on, until all elements are exhausted.
 
 This is useful for looping over more than one array at once:
 
@@ -352,7 +360,7 @@ plain arrays.
 ### natatime EXPR, LIST
 
 Creates an array iterator, for looping over an array in chunks of
-`$n` items at a time. (n at a time, get it?). An example is
+`$n` items at a time.  (n at a time, get it?).  An example is
 probably a better explanation than I could give in words.
 
 Example:
@@ -577,7 +585,7 @@ limitation does not apply to the XS version.
 
 The maintenance goal is to preserve the documented semantics of the API;
 bug fixes that bring actual behavior in line with semantics are allowed.
-New API functions may be added over time. If a backwards incompatible
+New API functions may be added over time.  If a backwards incompatible
 change is unavoidable, we will attempt to provide support for the legacy
 API using the same export tag mechanism currently in place.
 
@@ -586,7 +594,7 @@ configuration and testing modules will be bundled when reasonable;
 run-time dependencies will be added only if they deliver substantial
 benefit.
 
-# BUGS
+# KNOWN ISSUES
 
 There is a problem with a bug in 5.6.x perls. It is a syntax error to write
 things like:
@@ -612,14 +620,7 @@ output of your program with the environment variable `LIST_MOREUTILS_PP` set
 to a true value. That way I know where to look for the problem (in XS,
 pure-Perl or possibly both).
 
-# BUGS
-
-Please report any bugs or feature requests to
-`bug-list-someutils@rt.cpan.org`, or through the web interface at
-[http://rt.cpan.org](http://rt.cpan.org). I will be notified, and then you'll automatically be
-notified of progress on your bug as I make changes.
-
-# CREDITS
+# THANKS
 
 ## Tassilo von Parseval
 
@@ -630,7 +631,7 @@ tidier by making [List::Util](https://metacpan.org/pod/List::Util) obsolete.
 Brian McCauley suggested the inclusion of apply() and provided the pure-Perl
 implementation for it.
 
-Eric J. Roode asked me to add all functions from his module `List::MoreUtil`
+Eric J. Roode asked me to add all functions from his module `List::SomeUtil`
 into this one. With minor modifications, the pure-Perl implementations of those
 are by him.
 
@@ -674,6 +675,11 @@ package history.
 A pile of requests from other people is still pending further processing in
 my mailbox. This includes:
 
+- List::Util export pass-through
+
+    Allow **List::SomeUtils** to pass-through the regular [List::Util](https://metacpan.org/pod/List::Util)
+    functions to end users only need to `use` the one module.
+
 - uniq\_by(&@)
 
     Use code-reference to extract a key based on which the uniqueness is
@@ -705,3 +711,56 @@ Some parts copyright 2011 Aaron Crane.
 Copyright 2004 - 2010 by Tassilo von Parseval
 
 Copyright 2013 - 2015 by Jens Rehsack
+
+# SUPPORT
+
+Bugs may be submitted through [the RT bug tracker](http://rt.cpan.org/Public/Dist/Display.html?Name=List-SomeUtils)
+(or [bug-list-someutils@rt.cpan.org](mailto:bug-list-someutils@rt.cpan.org)).
+
+I am also usually active on IRC as 'drolsky' on `irc://irc.perl.org`.
+
+# DONATIONS
+
+If you'd like to thank me for the work I've done on this module, please
+consider making a "donation" to me via PayPal. I spend a lot of free time
+creating free software, and would appreciate any support you'd care to offer.
+
+Please note that **I am not suggesting that you must do this** in order for me
+to continue working on this particular software. I will continue to do so,
+inasmuch as I have in the past, for as long as it interests me.
+
+Similarly, a donation made in this way will probably not make me work on this
+software much more, unless I get so many donations that I can consider working
+on free software full time (let's all have a chuckle at that together).
+
+To donate, log into PayPal and send money to autarch@urth.org, or use the
+button at [http://www.urth.org/~autarch/fs-donation.html](http://www.urth.org/~autarch/fs-donation.html).
+
+# AUTHORS
+
+- Tassilo von Parseval &lt;tassilo.von.parseval@rwth-aachen.de>
+- Adam Kennedy &lt;adamk@cpan.org>
+- Jens Rehsack &lt;rehsack@cpan.org>
+- Dave Rolsky &lt;autarch@urth.org>
+
+# CONTRIBUTORS
+
+- Aaron Crane &lt;arc@cpan.org>
+- BackPan <BackPan>
+- Brad Forschinger &lt;bnjf@bnjf.id.au>
+- David Golden &lt;dagolden@cpan.org>
+- jddurand &lt;jeandamiendurand@free.fr>
+- Jens Rehsack &lt;sno@netbsd.org>
+- J.R. Mash &lt;jrmash@cpan.org>
+- Karen Etheridge &lt;ether@cpan.org>
+- Ricardo Signes &lt;rjbs@cpan.org>
+- Toby Inkster &lt;mail@tobyinkster.co.uk>
+- Tokuhiro Matsuno &lt;tokuhirom@cpan.org>
+- Tom Wyant &lt;wyant@cpan.org>
+
+# COPYRIGHT AND LICENCE
+
+This software is copyright (c) 2016 by Dave Rolsky &lt;autarch@urth.org>.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
