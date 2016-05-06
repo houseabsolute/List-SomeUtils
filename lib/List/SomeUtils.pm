@@ -71,13 +71,11 @@ sub _XScompiled {
 
 1;
 
+# ABSTRACT: Provide the stuff missing in List::Util
+
 __END__
 
 =pod
-
-=head1 NAME
-
-List::SomeUtils - Provide the stuff missing in List::Util
 
 =head1 SYNOPSIS
 
@@ -676,7 +674,7 @@ configuration and testing modules will be bundled when reasonable;
 run-time dependencies will be added only if they deliver substantial
 benefit.
 
-=head1 BUGS
+=head1 KNOWN ISSUES
 
 There is a problem with a bug in 5.6.x perls. It is a syntax error to write
 things like:
