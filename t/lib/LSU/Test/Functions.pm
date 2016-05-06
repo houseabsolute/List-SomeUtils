@@ -479,6 +479,9 @@ sub test_after {
         }
     );
     is_dying( sub { &after( 42, 4711 ); } );
+
+    @x = ( 1, after {/foo/} qw(abc def) );
+    is_deeply( \@x, [1], "check XS implementation doesn't mess up stack" );
 }
 
 # In the following, the @dummy variable is needed to circumvent
@@ -759,46 +762,27 @@ sub test_pairwise {
     my @a = ( 1, 2, 3, 4, 5 );
     my @b = ( 2, 4, 6, 8, 10 );
     my @c = pairwise { $a + $b } @a, @b;
-    is( is_deeply( \@c, [ 3, 6, 9, 12, 15 ] ), 1, "pw1" );
+    is_deeply( \@c, [ 3, 6, 9, 12, 15 ], "pw1" );
 
     @c = pairwise { $a * $b } @a, @b;    # returns (2, 8, 18)
-    is( is_deeply( \@c, [ 2, 8, 18, 32, 50 ] ), 1, "pw2" );
+    is_deeply( \@c, [ 2, 8, 18, 32, 50 ], "pw2" );
 
     # Did we modify the input arrays?
-    is( is_deeply( \@a, [ 1, 2, 3, 4, 5 ] ),  1, "pw3" );
-    is( is_deeply( \@b, [ 2, 4, 6, 8, 10 ] ), 1, "pw4" );
+    is_deeply( \@a, [ 1, 2, 3, 4, 5 ],  "pw3" );
+    is_deeply( \@b, [ 2, 4, 6, 8, 10 ], "pw4" );
 
     # $a and $b should be aliases: test
     @b = @a = ( 1, 2, 3 );
     @c = pairwise { $a++; $b *= 2 } @a, @b;
-    is( is_deeply( \@a, [ 2, 3, 4 ] ), 1, "pw5" );
-    is( is_deeply( \@b, [ 2, 4, 6 ] ), 1, "pw6" );
-    is( is_deeply( \@c, [ 2, 4, 6 ] ), 1, "pw7" );
+    is_deeply( \@a, [ 2, 3, 4 ], "pw5" );
+    is_deeply( \@b, [ 2, 4, 6 ], "pw6" );
+    is_deeply( \@c, [ 2, 4, 6 ], "pw7" );
 
-    # Test this one more thoroughly: the XS code looks flakey
-    # correctness of pairwise_perl proved by human auditing. :-)
-    sub pairwise_perl (&\@\@) {
-        no strict;
-        my $op = shift;
-        local ( *A, *B ) = @_;    # syms for caller's input arrays
-
-        # Localise $a, $b
-        my ( $caller_a, $caller_b ) = do {
-            my $pkg = caller();
-            \*{ $pkg . '::a' }, \*{ $pkg . '::b' };
-        };
-
-        # Loop iteration limit
-        my $limit = $#A > $#B ? $#A : $#B;
-
-        # This map expression is also the return value.
-        local ( *$caller_a, *$caller_b );
-        map {
-            # Assign to $a, $b as refs to caller's array elements
-            ( *$caller_a, *$caller_b ) = \( $A[$_], $B[$_] );
-            $op->();    # perform the transformation
-        } 0 .. $limit;
-    }
+    # sub returns more than two items
+    @a = ( 1, 1, 2, 3, 5 );
+    @b = ( 2, 3, 5, 7, 11 );
+    @c = pairwise { ($a) x $b } @a, @b;
+    is_deeply( \@c, [ (1) x 2, (1) x 3, (2) x 5, (3) x 7, (5) x 11 ], "pw8" );
 
     ( @a, @b ) = ();
     push @a, int rand(1000) for 0 .. rand(1000);
@@ -807,14 +791,18 @@ SCOPE:
     {
         local $SIG{__WARN__} = sub { };    # XXX
         my @res1 = pairwise { $a + $b } @a, @b;
-        my @res2 = pairwise_perl { $a + $b } @a, @b;
-        ok( is_deeply( \@res1, \@res2 ) );
+
+        # Test this one more thoroughly: the XS code looks flakey
+        # correctness of pairwise_perl proved by human auditing. :-)
+        my $limit = $#a > $#b ? $#a : $#b;
+        my @res2 = map { $a[$_] + $b[$_] } 0 .. $limit;
+        is_deeply( \@res1, \@res2 );
     }
 
     @a = qw/a b c/;
     @b = qw/1 2 3/;
     @c = pairwise { ( $a, $b ) } @a, @b;
-    ok( is_deeply( \@c, [qw/a 1 b 2 c 3/] ) );    # 88
+    is_deeply( \@c, [qw/a 1 b 2 c 3/], "pw map" );
 
 SKIP:
     {
@@ -1224,6 +1212,10 @@ sub test_part {
     ok( is_deeply( $part[1], [ 2, 5, 8, 11 ] ) );
     ok( is_deeply( $part[2], [ 3, 6, 9, 12 ] ) );
 
+    $list[2] = 0;
+    is( $part[2][0], 3, 'Values are not aliases' );
+
+    @list = 1 .. 12;
     @part = part {3} @list;
     is( $part[0], undef );
     is( $part[1], undef );
@@ -1233,8 +1225,9 @@ sub test_part {
     eval {
         @part = part {-1} @list;
     };
-    ok( $@
-            =~ /^Modification of non-creatable array value attempted, subscript -1/
+    like(
+        $@,
+        qr/^Modification of non-creatable array value attempted, subscript -1/
     );
 
     $i = 0;
@@ -1302,6 +1295,7 @@ sub test_minmax {
     ( $min, $max ) = minmax @list;
     is( $min, 0 );
     is( $max, 10001 );
+    $list[0] = 17;
 
     # Some floats
     @list = ( 0, -1.1, 3.14, 1 / 7, 10000, -10 / 3 );
@@ -1316,6 +1310,13 @@ sub test_minmax {
     ( $min, $max ) = minmax $input;
     is( $min, -1 );
     is( $max, -1 );
+
+    # COW causes missing max when optimization for 1 argument is applied
+    @list = grep { defined $_ } map {
+        my ( $min, $max ) = minmax( sprintf( "%.3g", rand ) );
+        ( $min, $max )
+    } ( 0 .. 19 );
+    is( scalar @list, 40, "minmax swallows max on COW" );
 
     # Confirm output are independant copies of input
     $input = 1;

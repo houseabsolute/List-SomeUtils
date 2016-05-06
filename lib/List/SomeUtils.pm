@@ -44,8 +44,8 @@ my %aliases = (
     zip           => 'mesh',
 );
 
-our @ISA         = qw(Exporter::Tiny);
-our @EXPORT_OK   = ( @subs, keys %aliases );
+use parent 'Exporter::Tiny';
+our @EXPORT_OK = ( @subs, keys %aliases );
 our %EXPORT_TAGS = ( all => \@EXPORT_OK );
 
 {
@@ -59,10 +59,12 @@ our %EXPORT_TAGS = ( all => \@EXPORT_OK );
 
 use Scalar::Util;
 for my $alias ( keys %aliases ) {
+    ## no critic (TestingAndDebugging::ProhibitNoStrict)
     no strict 'refs';
     *{$alias} = __PACKAGE__->can( $aliases{$alias} );
 }
 
+## no critic (Subroutines::ProhibitUnusedPrivateSubroutines)
 sub _XScompiled {
     return Module::Implementation::implementation_for(__PACKAGE__) eq 'XS';
 }
