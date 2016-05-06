@@ -1,6 +1,8 @@
 Revision history for Perl extension List-SomeUtils
 
 {{$NEXT}}
+    - Updated to latest ExtUtils::HasCompiler and simplified dynamic
+      prereqs. Patch by Karen Etheridge. GitHub #3.
 
 0.51     2016-02-27
     - No code changes. The last release was missing a Changes entry.
