@@ -706,7 +706,7 @@ pure-Perl or possibly both).
 
 Credits go to a number of people: Steve Purkis for giving me namespace advice
 and James Keenan and Terrence Branno for their effort of keeping the CPAN
-tidier by making L<List::Utils> obsolete.
+tidier by making L<List::Util> obsolete.
 
 Brian McCauley suggested the inclusion of apply() and provided the pure-Perl
 implementation for it.
