@@ -164,7 +164,7 @@ the underlying comparison is "or" or "and".  Conceptually:
     0 elements:     0                   1
 
 In the second case, three-value logic is desired, in which a junction
-applied to an empty list returns C<undef> rather than true or false 
+applied to an empty list returns C<undef> rather than true or false
 
 Junctions with a C<_u> suffix implement three-valued logic.  Those
 without are boolean.
@@ -288,7 +288,7 @@ true. Sets C<$_> for each item in LIST in turn.
 
 =head3 insert_after_string STRING VALUE LIST
 
-Inserts VALUE after the first item in LIST which is equal to STRING. 
+Inserts VALUE after the first item in LIST which is equal to STRING.
 
   my @list = qw/This is a list/;
   insert_after_string "a", "longer" => @list;
