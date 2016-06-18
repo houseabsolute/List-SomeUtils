@@ -1,6 +1,7 @@
 Revision history for Perl extension List-SomeUtils
 
 {{$NEXT}}
+    - Replaced Exporter::Tiny with Exporter.
 
 0.52     2016-05-06
     - Updated to latest ExtUtils::HasCompiler and simplified dynamic

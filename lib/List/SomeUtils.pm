@@ -6,7 +6,7 @@ use warnings;
 
 our $VERSION = '0.53';
 
-use Exporter::Tiny qw();
+use Exporter qw( import );
 
 use Module::Implementation;
 
