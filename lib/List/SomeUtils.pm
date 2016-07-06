@@ -57,7 +57,6 @@ our %EXPORT_TAGS = ( all => \@EXPORT_OK );
     $loader->();
 }
 
-use Scalar::Util;
 for my $alias ( keys %aliases ) {
     ## no critic (TestingAndDebugging::ProhibitNoStrict)
     no strict 'refs';
