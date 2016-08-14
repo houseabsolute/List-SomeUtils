@@ -1,15 +1,12 @@
 requires "Carp" => "0";
-requires "Exporter::Tiny" => "0";
+requires "Exporter" => "0";
 requires "Module::Implementation" => "0";
-requires "Scalar::Util" => "0";
-requires "parent" => "0";
 requires "perl" => "5.006";
 requires "strict" => "0";
 requires "vars" => "0";
 requires "warnings" => "0";
 
 on 'test' => sub {
-  requires "Exporter" => "0";
   requires "ExtUtils::MakeMaker" => "0";
   requires "File::Spec" => "0";
   requires "Test::Builder::Module" => "0";
@@ -31,6 +28,7 @@ on 'configure' => sub {
 };
 
 on 'develop' => sub {
+  requires "Code::TidyAll::Plugin::Test::Vars" => "0.02";
   requires "ExtUtils::HasCompiler" => "0.014";
   requires "File::Spec" => "0";
   requires "IO::Handle" => "0";
@@ -53,7 +51,9 @@ on 'develop' => sub {
   requires "Test::Pod::Coverage" => "1.08";
   requires "Test::Pod::LinkCheck" => "0";
   requires "Test::Pod::No404s" => "0";
+  requires "Test::Portability::Files" => "0";
   requires "Test::Spelling" => "0.12";
+  requires "Test::Vars" => "0.009";
   requires "Test::Version" => "1";
   requires "Tie::Array" => "0";
   requires "blib" => "1.01";

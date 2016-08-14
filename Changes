@@ -1,6 +1,8 @@
 Revision history for Perl extension List-SomeUtils
 
 {{$NEXT}}
+
+0.53     2016-08-14
     - Replaced Exporter::Tiny with Exporter.
 
 0.52     2016-05-06

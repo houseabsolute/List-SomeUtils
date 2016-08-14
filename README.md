@@ -4,7 +4,7 @@ List::SomeUtils - Provide the stuff missing in List::Util
 
 # VERSION
 
-version 0.52
+version 0.53
 
 # SYNOPSIS
 
@@ -738,29 +738,29 @@ button at [http://www.urth.org/~autarch/fs-donation.html](http://www.urth.org/~a
 
 # AUTHORS
 
-- Tassilo von Parseval &lt;tassilo.von.parseval@rwth-aachen.de>
-- Adam Kennedy &lt;adamk@cpan.org>
-- Jens Rehsack &lt;rehsack@cpan.org>
-- Dave Rolsky &lt;autarch@urth.org>
+- Tassilo von Parseval <tassilo.von.parseval@rwth-aachen.de>
+- Adam Kennedy <adamk@cpan.org>
+- Jens Rehsack <rehsack@cpan.org>
+- Dave Rolsky <autarch@urth.org>
 
 # CONTRIBUTORS
 
-- Aaron Crane &lt;arc@cpan.org>
+- Aaron Crane <arc@cpan.org>
 - BackPan <BackPan>
-- Brad Forschinger &lt;bnjf@bnjf.id.au>
-- David Golden &lt;dagolden@cpan.org>
-- jddurand &lt;jeandamiendurand@free.fr>
-- Jens Rehsack &lt;sno@netbsd.org>
-- J.R. Mash &lt;jrmash@cpan.org>
-- Karen Etheridge &lt;ether@cpan.org>
-- Ricardo Signes &lt;rjbs@cpan.org>
-- Toby Inkster &lt;mail@tobyinkster.co.uk>
-- Tokuhiro Matsuno &lt;tokuhirom@cpan.org>
-- Tom Wyant &lt;wyant@cpan.org>
+- Brad Forschinger <bnjf@bnjf.id.au>
+- David Golden <dagolden@cpan.org>
+- jddurand <jeandamiendurand@free.fr>
+- Jens Rehsack <sno@netbsd.org>
+- J.R. Mash <jrmash@cpan.org>
+- Karen Etheridge <ether@cpan.org>
+- Ricardo Signes <rjbs@cpan.org>
+- Toby Inkster <mail@tobyinkster.co.uk>
+- Tokuhiro Matsuno <tokuhirom@cpan.org>
+- Tom Wyant <wyant@cpan.org>
 
-# COPYRIGHT AND LICENCE
+# COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2016 by Dave Rolsky &lt;autarch@urth.org>.
+This software is copyright (c) 2016 by Dave Rolsky <autarch@urth.org>.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
