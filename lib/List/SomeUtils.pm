@@ -44,7 +44,6 @@ my %aliases = (
     zip           => 'mesh',
 );
 
-use parent 'Exporter::Tiny';
 our @EXPORT_OK = ( @subs, keys %aliases );
 our %EXPORT_TAGS = ( all => \@EXPORT_OK );
 
