@@ -21,9 +21,7 @@ perl:
 matrix:
   allow_failures:
     - perl: blead
-  include:
-    - env: COVERAGE=1
-      perl: '5.24'
+# Removed COVERAGE intentionally because this distro somehow fails with coverage on.
 env:
   global:
     - RELEASE_TESTING=1
