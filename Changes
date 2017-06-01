@@ -1,6 +1,7 @@
 Revision history for Perl extension List-SomeUtils
 
 {{$NEXT}}
+    - Moved issue tracking to GitHub.
 
 0.53     2016-08-14
     - Replaced Exporter::Tiny with Exporter.
