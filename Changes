@@ -1,6 +1,8 @@
 Revision history for Perl extension List-SomeUtils
 
 {{$NEXT}}
+
+0.54     2017-06-01
     - Moved issue tracking to GitHub.
 
 0.53     2016-08-14
