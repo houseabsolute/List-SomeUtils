@@ -3,18 +3,14 @@ package LSU::Test::Functions;
 use strict;
 use warnings;
 
+use Config;
+use List::SomeUtils ':all';
+use Scalar::Util qw( weaken );
+use Storable qw( freeze );
+use Tie::Array ();
+
 use Test::More;
 use Test::LSU;
-use Tie::Array ();
-use List::SomeUtils ':all';
-
-use Config;
-
-my $have_scalar_util;
-eval "use Scalar::Util qw(); \$have_scalar_util = 1;";
-
-eval "use Storable qw();";
-$@ or Storable->import(qw(freeze));
 
 # Run all tests
 sub run_tests {
@@ -420,11 +416,10 @@ sub test_indexes {
     $lr and is_deeply( \@o, [ 1, 3, 5 ], "indexes/leak: odd" );
     $lr and is_deeply( \@e, [ 0, 2, 4 ], "indexes/leak: even" );
 
-    if ($have_scalar_util) {
-        my $ref = \( indexes( sub {1}, 123 ) );
-        Scalar::Util::weaken($ref);
-        is( $ref, undef, "weakened away" );
-    }
+    my $ref = \( indexes( sub {1}, 123 ) );
+    weaken($ref);
+    is( $ref, undef, "weakened away" );
+
     is_dying( sub { &indexes( 42, 4711 ); } );
 }
 
@@ -1571,52 +1566,93 @@ sub test_nsort_by {
 sub test_mode {
     my @list = ( 1 .. 5 );
     is_deeply(
-        [ sort @list ],
         [ sort { $a <=> $b } mode(@list) ],
+        [ sort @list ],
         'mode of list without repeats is the list itself'
+    );
+    is(
+        scalar mode(@list),
+        5,
+        'mode returns modality in scalar context'
     );
 
     @list = ( 1, 1 .. 5 );
     is_deeply(
-        [1],
         [ mode(@list) ],
+        [1],
         'mode of list with one repeat is the repeated item'
+    );
+    is(
+        scalar mode(@list),
+        1,
+        'mode returns modality in scalar context'
     );
 
     @list = ( 1, 1 .. 5, 5 );
     is_deeply(
-        [ 1, 5 ],
         [ sort { $a <=> $b } mode(@list) ],
+        [ 1, 5 ],
         'mode of bimodal list'
+    );
+    is(
+        scalar mode(@list),
+        2,
+        'mode returns modality in scalar context'
     );
 
     @list = ( 1, 1 .. 5, 5, 9, 9 );
     is_deeply(
-        [ 1, 5, 9 ],
         [ sort { $a <=> $b } mode(@list) ],
+        [ 1, 5, 9 ],
         'mode of trimodal list'
     );
 
     @list = ( 1, 1, 1, 1 .. 5, 5, 9, 9 );
     is_deeply(
-        [1],
         [ mode(@list) ],
+        [1],
         'mode of list with multiple repeats is the most repeated item'
     );
 
     @list = ();
     is_deeply(
-        [],
         [ mode() ],
+        [],
         'mode of empty list is an empty list'
+    );
+    is(
+        scalar mode(@list),
+        0,
+        'mode returns modality in scalar context'
     );
 
     @list = qw( a a b c d );
     is_deeply(
-        ['a'],
         [ mode(@list) ],
+        ['a'],
         'mode of list of strings'
     );
+
+    my $foo1 = Overloaded->new('foo');
+    my $foo2 = Overloaded->new('foo');
+    my $bar = Overloaded->new('bar');
+
+    @list = ( $foo1, $foo2, $bar );
+    is_deeply(
+        [ sort( mode(@list) ) ],
+        ['foo'],
+        'objects passed to mode are stringified'
+    );
+}
+
+{
+    package Overloaded;
+    use overload q{""} => sub { $_[0]->{string} };
+
+    sub new {
+        my $class = shift;
+        return bless { string => shift }, $class;
+    }
 }
 
 1;

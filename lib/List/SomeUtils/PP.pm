@@ -545,7 +545,7 @@ sub nsort_by(&@)
       map { [ $_, scalar( $code->() ) ] } @list;
 }
 
-sub mode(@) {
+sub mode (@) {
     my %v;
     $v{$_}++ for @_;
     my $max = max( values %v );
