@@ -36,6 +36,7 @@ my @subs = qw(
     lastval
     mesh
     minmax
+    mode
     natatime
     none
     none_u
@@ -684,6 +685,19 @@ However, the Perl implementation of it has some overhead simply due to the fact
 that there are more lines of Perl code involved. Therefore, LIST needs to be
 fairly big in order for C<minmax> to win over a naive implementation. This
 limitation does not apply to the XS version.
+
+=head3 mode LIST
+
+Calculates the most common items in the list and returns them as a list. This
+is effectively done by string comparisons, so references will be
+stringified. If they implement string overloading, this will be used.
+
+If more than one item appears the same number of times in the list, all such
+items will be returned. For example, the mode of a unique list is the list
+itself.
+
+This function B<always> returns a list. That means that in scalar context you
+get a count indicating the number of modes in the list.
 
 =head1 MAINTENANCE
 

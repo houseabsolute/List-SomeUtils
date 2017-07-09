@@ -4,6 +4,8 @@ use 5.006;
 use strict;
 use warnings;
 
+use List::Util qw( max );
+
 our $VERSION = '0.55';
 
 sub any (&@)
@@ -541,6 +543,13 @@ sub nsort_by(&@)
     return map { $_->[0] }
       sort     { $a->[1] <=> $b->[1] }
       map { [ $_, scalar( $code->() ) ] } @list;
+}
+
+sub mode(@) {
+    my %v;
+    $v{$_}++ for @_;
+    my $max = max( values %v );
+    return grep { $v{$_} == $max } keys %v;
 }
 
 1;

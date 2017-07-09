@@ -58,6 +58,7 @@ sub run_tests {
     test_minmax();
     test_bsearch();
     test_bsearchidx();
+    test_mode();
 
     done_testing();
 }
@@ -1564,6 +1565,57 @@ sub test_nsort_by {
     is_deeply(
         [ nsort_by { $_->[0] } @list ],
         [ map { [$_] } sort { $a <=> $b } 1 .. 100 ]
+    );
+}
+
+sub test_mode {
+    my @list = ( 1 .. 5 );
+    is_deeply(
+        [ sort @list ],
+        [ sort { $a <=> $b } mode(@list) ],
+        'mode of list without repeats is the list itself'
+    );
+
+    @list = ( 1, 1 .. 5 );
+    is_deeply(
+        [1],
+        [ mode(@list) ],
+        'mode of list with one repeat is the repeated item'
+    );
+
+    @list = ( 1, 1 .. 5, 5 );
+    is_deeply(
+        [ 1, 5 ],
+        [ sort { $a <=> $b } mode(@list) ],
+        'mode of bimodal list'
+    );
+
+    @list = ( 1, 1 .. 5, 5, 9, 9 );
+    is_deeply(
+        [ 1, 5, 9 ],
+        [ sort { $a <=> $b } mode(@list) ],
+        'mode of trimodal list'
+    );
+
+    @list = ( 1, 1, 1, 1 .. 5, 5, 9, 9 );
+    is_deeply(
+        [1],
+        [ mode(@list) ],
+        'mode of list with multiple repeats is the most repeated item'
+    );
+
+    @list = ();
+    is_deeply(
+        [],
+        [ mode() ],
+        'mode of empty list is an empty list'
+    );
+
+    @list = qw( a a b c d );
+    is_deeply(
+        ['a'],
+        [ mode(@list) ],
+        'mode of list of strings'
     );
 }
 
