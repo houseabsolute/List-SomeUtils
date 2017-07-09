@@ -128,15 +128,15 @@ couldn't be compiled on this machine.
 =head1 WHY DOES THIS MODULE EXIST?
 
 You might wonder why this module exists when we already have
-L<List::MoreUtils>. In fact, this module is the same code as is found in LMU
-with no significant changes. However, the LMU distribution depends on several
-modules for configuration (to run the Makefile.PL) that some folks in the Perl
-community don't think are appropriate for a module high upstream in the CPAN
-river.
+L<List::MoreUtils>. In fact, this module is (nearly) the same code as is found
+in LMU with no significant changes. However, the LMU distribution depends on
+several modules for configuration (to run the Makefile.PL) that some folks in
+the Perl community don't think are appropriate for a module high upstream in
+the CPAN river.
 
 I (Dave Rolsky) don't have a strong opinion on this, but I I<do> like the
 functions provided by LMU, and I'm tired of getting patches and PRs to remove
-it from my code.
+LMU from my code.
 
 This distribution exists to let me use the functionality I like without having
 to get into tiring arguments about issues I don't really care about.
