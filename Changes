@@ -1,6 +1,7 @@
 Revision history for Perl extension List-SomeUtils
 
 {{$NEXT}}
+    - Fixed incorrect comments in doc examples for uniq().
 
 0.54     2017-06-01
     - Moved issue tracking to GitHub.

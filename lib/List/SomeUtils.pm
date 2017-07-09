@@ -343,9 +343,9 @@ scalar context, returns the number of unique elements in LIST.
   my $x = uniq 1, 1, 2, 2, 3, 5, 3, 4; # returns 5
   # returns "Mike", "Michael", "Richard", "Rick"
   my @n = distinct "Mike", "Michael", "Richard", "Rick", "Michael", "Rick"
-  # returns '', 'S1', A5' and complains about "Use of uninitialized value"
+  # returns '', undef, 'S1', A5'
   my @s = distinct '', undef, 'S1', 'A5'
-  # returns undef, 'S1', A5' and complains about "Use of uninitialized value"
+  # returns '', undef, 'S1', A5'
   my @w = uniq undef, '', 'S1', 'A5'
 
 C<distinct> is an alias for C<uniq>.
