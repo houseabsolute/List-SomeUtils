@@ -1650,6 +1650,15 @@ sub test_mode {
         ['foo'],
         'objects passed to mode are stringified'
     );
+
+    leak_free_ok(
+        mode => sub {
+            my @mode     = mode(qw( a b c a b a b ));
+            my $modality = mode(qw( a b c a b a b ));
+            @mode     = mode();
+            $modality = mode();
+        }
+    );
 }
 
 {
