@@ -6,7 +6,7 @@ use warnings;
 
 use List::Util qw( max );
 
-our $VERSION = '0.56';
+our $VERSION = '0.57';
 
 sub any (&@)
 {
