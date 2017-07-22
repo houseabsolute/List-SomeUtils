@@ -9,52 +9,59 @@ use Scalar::Util qw( weaken );
 use Storable qw( freeze );
 use Tie::Array ();
 
-use Test::More;
+use Test::More 0.96;
 use Test::LSU;
 
 # Run all tests
 sub run_tests {
-    test_any();
-    test_all();
-    test_none();
-    test_notall();
-    test_one();
-    test_any_u();
-    test_all_u();
-    test_none_u();
-    test_notall_u();
-    test_one_u();
-    test_true();
-    test_false();
-    test_firstidx();
-    test_lastidx();
-    test_onlyidx();
-    test_insert_after();
-    test_insert_after_string();
-    test_apply();
-    test_indexes();
-    test_before();
-    test_before_incl();
-    test_after();
-    test_after_incl();
-    test_firstval();
-    test_lastval();
-    test_onlyval();
-    test_firstres();
-    test_lastres();
-    test_onlyres();
-    test_each_array();
-    test_pairwise();
-    test_natatime();
-    test_zip();
-    test_mesh();
-    test_uniq();
-    test_singleton();
-    test_part();
-    test_minmax();
-    test_bsearch();
-    test_bsearchidx();
-    test_mode();
+    for my $export (
+        qw(
+        any
+        all
+        none
+        notall
+        one
+        any_u
+        all_u
+        none_u
+        notall_u
+        one_u
+        true
+        false
+        firstidx
+        lastidx
+        onlyidx
+        insert_after
+        insert_after_string
+        apply
+        indexes
+        before
+        before_incl
+        after
+        after_incl
+        firstval
+        lastval
+        onlyval
+        firstres
+        lastres
+        onlyres
+        each_array
+        pairwise
+        natatime
+        zip
+        mesh
+        uniq
+        singleton
+        part
+        minmax
+        bsearch
+        bsearchidx
+        mode
+        )
+        ) {
+        my $sub = __PACKAGE__->can( 'test_' . $export );
+        subtest( $export, $sub );
+    }
 
     done_testing();
 }
