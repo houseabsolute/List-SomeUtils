@@ -68,7 +68,7 @@ my %FallbackPrereqs = (
 );
 
 # inserted by Dist::Zilla::Plugin::DynamicPrereqs 0.033
-requires('List::SomeUtils::XS', '0.53') if !want_pp() and can_xs();
+requires('List::SomeUtils::XS', '0.54') if !want_pp() and can_xs();
 
 
 unless ( eval { ExtUtils::MakeMaker->VERSION(6.63_03) } ) {

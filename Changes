@@ -1,6 +1,8 @@
 Revision history for Perl extension List-SomeUtils
 
 {{$NEXT}}
+
+0.56     2017-07-22
     - Make sure we depend on the latest LSU::XS if the system support XS.
 
 0.55     2017-07-22

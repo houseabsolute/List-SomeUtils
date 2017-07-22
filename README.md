@@ -4,7 +4,7 @@ List::SomeUtils - Provide the stuff missing in List::Util
 
 # VERSION
 
-version 0.55
+version 0.56
 
 # SYNOPSIS
 
