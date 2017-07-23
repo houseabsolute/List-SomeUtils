@@ -696,8 +696,8 @@ If more than one item appears the same number of times in the list, all such
 items will be returned. For example, the mode of a unique list is the list
 itself.
 
-This function B<always> returns a list. That means that in scalar context you
-get a count indicating the number of modes in the list.
+This function returns a list in list context. In scalar context it returns a
+count indicating the number of modes in the list.
 
 =head1 MAINTENANCE
 
