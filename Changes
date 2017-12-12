@@ -2,6 +2,8 @@ Revision history for Perl extension List-SomeUtils
 
 {{$NEXT}}
 
+0.57     2017-12-12 (TRIAL RELEASE)
+
 * Fixed a number of bugs in the handling of empty lists. The any_u(), all_u(),
   none_u(), notall_u(), and one_u() functions returned an empty list in list
   context instead of undef. This is in direct opposition to the documentation
