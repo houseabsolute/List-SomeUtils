@@ -62,7 +62,7 @@ sub one (&@)
 sub any_u (&@)
 {
     my $f = shift;
-    return if !@_;
+    return undef if !@_;
     $f->() and return 1 foreach (@_);
     return 0;
 }
@@ -70,7 +70,7 @@ sub any_u (&@)
 sub all_u (&@)
 {
     my $f = shift;
-    return if !@_;
+    return undef if !@_;
     $f->() or return 0 foreach (@_);
     return 1;
 }
@@ -78,7 +78,7 @@ sub all_u (&@)
 sub none_u (&@)
 {
     my $f = shift;
-    return if !@_;
+    return undef if !@_;
     $f->() and return 0 foreach (@_);
     return 1;
 }
@@ -86,7 +86,7 @@ sub none_u (&@)
 sub notall_u (&@)
 {
     my $f = shift;
-    return if !@_;
+    return undef if !@_;
     $f->() or return 1 foreach (@_);
     return 0;
 }
@@ -94,7 +94,7 @@ sub notall_u (&@)
 sub one_u (&@)
 {
     my $f = shift;
-    return if !@_;
+    return undef if !@_;
     my $found = 0;
     foreach (@_)
     {
