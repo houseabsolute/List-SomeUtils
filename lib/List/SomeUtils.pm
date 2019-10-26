@@ -283,10 +283,13 @@ Evaluation of BLOCK will immediately stop at the second true value.
 
 =head3 apply BLOCK LIST
 
-Applies BLOCK to each item in LIST and returns a list of the values after BLOCK
-has been applied. In scalar context, the last element is returned.  This
-function is similar to C<map> but will not modify the elements of the input
-list:
+Makes a copy of the list and then passes each element I<from the copy> to the
+BLOCK. Any changes or assignments to C<$_> in the BLOCK will only affect the
+elements of the new list. However, if C<$_> is a reference then changes to the
+referenced value will be seen in both the original and new list.
+
+This function is similar to C<map> but will not modify the elements of the
+input list:
 
   my @list = (1 .. 4);
   my @mult = apply { $_ *= 2 } @list;
@@ -299,6 +302,15 @@ list:
 Think of it as syntactic sugar for
 
   for (my @mult = @list) { $_ *= 2 }
+
+Note that you must alter C<$_> directly inside BLOCK in order for changes to
+make effect. New value returned from the BLOCK are ignored:
+
+  # @new is identical to @list.
+  my @new = apply { $_ * 2 } @list;
+
+  # @new is different from @list
+  my @new = apply { $_ =* 2 } @list;
 
 =head3 insert_after BLOCK VALUE LIST
 
