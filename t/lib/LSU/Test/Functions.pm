@@ -58,7 +58,7 @@ sub run_tests {
         bsearchidx
         mode
         )
-        ) {
+    ) {
         my $sub = __PACKAGE__->can( 'test_' . $export );
         subtest( $export, $sub );
     }
@@ -388,11 +388,11 @@ sub test_apply {
     is_deeply( \@null_list, [], 'apply(null) returns null list' );
 
     # Normal cases
-    my @list = ( 0 .. 9 );
+    my @list  = ( 0 .. 9 );
     my @list1 = apply { $_++ } @list;
     ok( is_deeply( \@list,  [ 0 .. 9 ] ) );
     ok( is_deeply( \@list1, [ 1 .. 10 ] ) );
-    @list = ( " foo ", " bar ", "     ", "foobar" );
+    @list  = ( " foo ", " bar ", "     ", "foobar" );
     @list1 = apply {s/^\s+|\s+$//g} @list;
     ok( is_deeply( \@list,  [ " foo ", " bar ", "     ", "foobar" ] ) );
     ok( is_deeply( \@list1, [ "foo",   "bar",   "",      "foobar" ] ) );
@@ -688,10 +688,10 @@ sub test_lastres {
 sub test_onlyres {
     my @list = ( 1 .. 300 );
     is( "Hallelujah", onlyres { 150 == $_ and "Hallelujah" } @list );
-    is( 1,     onlyres { 300 == $_ } @list );
-    is( undef, onlyres { 0 == $_ } @list );
-    is( undef, onlyres { 1 <= $_ } @list );
-    is( undef, onlyres { !( 127 & $_ ) } @list );
+    is( 1,            onlyres { 300 == $_ } @list );
+    is( undef,        onlyres { 0 == $_ } @list );
+    is( undef,        onlyres { 1 <= $_ } @list );
+    is( undef,        onlyres { !( 127 & $_ ) } @list );
 
     # Test aliases
     is( 1,            only_result { 150 == $_ } @list );
@@ -883,7 +883,7 @@ SCOPE:
         # Test this one more thoroughly: the XS code looks flakey
         # correctness of pairwise_perl proved by human auditing. :-)
         my $limit = $#a > $#b ? $#a : $#b;
-        my @res2 = map { $a[$_] + $b[$_] } 0 .. $limit;
+        my @res2  = map { $a[$_] + $b[$_] } 0 .. $limit;
         is_deeply( \@res1, \@res2 );
     }
 
@@ -969,7 +969,7 @@ SKIP:
 
 sub test_natatime {
     {
-        my @x = ( 'a' .. 'g' );
+        my @x  = ( 'a' .. 'g' );
         my $it = natatime 3, @x;
         my @r;
         local $" = " ";
@@ -980,7 +980,7 @@ sub test_natatime {
 
         my @a = ( 1 .. 1000 );
         $it = natatime 1, @a;
-        @r = ();
+        @r  = ();
         while ( my @vals = &$it ) {
             push @r, @vals;
         }
@@ -988,7 +988,7 @@ sub test_natatime {
 
         leak_free_ok(
             natatime => sub {
-                my @y = 1;
+                my @y  = 1;
                 my $it = natatime 2, @y;
                 while ( my @vals = $it->() ) {
 
@@ -1186,7 +1186,7 @@ SCOPE:
 
 SCOPE:
     {
-        my @foo = ( 'a', 'b', '', undef, 'b', 'c', '' );
+        my @foo  = ( 'a', 'b', '', undef, 'b', 'c', '' );
         my @ufoo = ( 'a', 'b', '', undef, 'c' );
         is_deeply( [ uniq @foo ], \@ufoo, 'undef is supported correctly' );
     }
@@ -1205,11 +1205,11 @@ SCOPE:
         sub {
             eval {
                 my $obj = DieOnStringify->new;
-                my @u = uniq $obj, $obj;
+                my @u   = uniq $obj, $obj;
             };
             eval {
                 my $obj = DieOnStringify->new;
-                my $u = uniq $obj, $obj;
+                my $u   = uniq $obj, $obj;
             };
         }
     );
@@ -1276,14 +1276,14 @@ SCOPE:
 
 SCOPE:
     {
-        my @foo = ( 'a', 'b', '', undef, 'b', 'c', '' );
+        my @foo  = ( 'a', 'b',   '', undef, 'b', 'c', '' );
         my @sfoo = ( 'a', undef, 'c' );
         is_deeply(
             [ singleton @foo ], \@sfoo,
             'one undef is supported correctly by singleton'
         );
-        @foo = ( 'a', 'b', '', undef, 'b', 'c', undef );
-        @sfoo = ( 'a', '', 'c' );
+        @foo  = ( 'a', 'b', '', undef, 'b', 'c', undef );
+        @sfoo = ( 'a', '',  'c' );
         is_deeply(
             [ singleton @foo ], \@sfoo,
             'twice undef is supported correctly by singleton'
@@ -1310,11 +1310,11 @@ SCOPE:
         sub {
             eval {
                 my $obj = DieOnStringify->new;
-                my @u = singleton $obj, $obj;
+                my @u   = singleton $obj, $obj;
             };
             eval {
                 my $obj = DieOnStringify->new;
-                my $u = singleton $obj, $obj;
+                my $u   = singleton $obj, $obj;
             };
         }
     );
@@ -1349,7 +1349,7 @@ sub test_part {
         qr/^Modification of non-creatable array value attempted, subscript -1/
     );
 
-    $i = 0;
+    $i    = 0;
     @part = part { $i++ == 0 ? 0 : -1 } @list;
     is_deeply( $part[0], [ 1 .. 12 ], "part with negative indices" );
 
@@ -1716,7 +1716,7 @@ sub test_nsort_by {
     );
 
     my @empty;
-    is_deeply( [ nsort_by { $_ ** 2 } @empty ], [] );
+    is_deeply( [ nsort_by { $_**2 } @empty ], [] );
 }
 
 sub test_mode {
@@ -1791,7 +1791,7 @@ sub test_mode {
 
     my $foo1 = Overloaded->new('foo');
     my $foo2 = Overloaded->new('foo');
-    my $bar = Overloaded->new('bar');
+    my $bar  = Overloaded->new('bar');
 
     @list = ( $foo1, $foo2, $bar );
     is_deeply(
