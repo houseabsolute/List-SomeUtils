@@ -22,7 +22,7 @@ my $CLASS = __PACKAGE__;
 sub is_true {
     @_ == 1 or croak "Expected 1 param";
     my $tb = $CLASS->builder();
-    $tb->ok( $_[0], "is_true ()" );
+    $tb->ok( $_[0], "is_true()" );
 }
 
 sub is_false {
@@ -34,7 +34,7 @@ sub is_false {
 sub is_defined {
     @_ < 1 or croak "Expected 0..1 param";
     my $tb = $CLASS->builder();
-    $tb->ok( defined( $_[0] ), "is_defined ()" );
+    $tb->ok( defined( $_[0] ), "is_defined()" );
 }
 
 sub is_undef {
