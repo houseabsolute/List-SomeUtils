@@ -12,6 +12,12 @@ use Tie::Array ();
 use Test::More 0.96;
 use Test::LSU;
 
+## no critic (ErrorHandling::RequireCheckingReturnValueOfEval)
+## no critic (Subroutines::ProtectPrivateSubs)
+## no critic (TestingAndDebugging::RequireTestLabels)
+## no critic (ValuesAndExpressions::ProhibitInterpolationOfLiterals)
+## no critic (Variables::ProhibitReusedNames)
+
 # Run all tests
 sub run_tests {
     for my $export (
@@ -324,15 +330,15 @@ sub test_onlyidx {
 sub test_insert_after {
     my @list = qw{This is a list};
     insert_after { $_ eq "a" } "longer" => @list;
-    is( join( ' ', @list ), "This is a longer list" );
+    is( join( q{ }, @list ), "This is a longer list" );
     insert_after {0} "bla" => @list;
-    is( join( ' ', @list ), "This is a longer list" );
+    is( join( q{ }, @list ), "This is a longer list" );
     insert_after { $_ eq "list" } "!" => @list;
-    is( join( ' ', @list ), "This is a longer list !" );
+    is( join( q{ }, @list ), "This is a longer list !" );
     @list = ( qw{This is}, undef, qw{list} );
     insert_after { not defined($_) } "longer" => @list;
     $list[2] = "a";
-    is( join( ' ', @list ), "This is a longer list" );
+    is( join( q{ }, @list ), "This is a longer list" );
 
     leak_free_ok(
         insert_after => sub {
@@ -356,14 +362,14 @@ sub test_insert_after {
 sub test_insert_after_string {
     my @list = qw{This is a list};
     insert_after_string "a", "longer" => @list;
-    is( join( ' ', @list ), "This is a longer list" );
+    is( join( q{ }, @list ), "This is a longer list" );
     @list = ( undef, qw{This is a list} );
     insert_after_string "a", "longer", @list;
     shift @list;
-    is( join( ' ', @list ), "This is a longer list" );
+    is( join( q{ }, @list ), "This is a longer list" );
     @list = ( "This\0", "is\0", "a\0", "list\0" );
     insert_after_string "a\0", "longer\0", @list;
-    is( join( ' ', @list ), "This\0 is\0 a\0 longer\0 list\0" );
+    is( join( q{ }, @list ), "This\0 is\0 a\0 longer\0 list\0" );
 
     leak_free_ok(
         insert_after_string => sub {
@@ -392,10 +398,10 @@ sub test_apply {
     my @list1 = apply { $_++ } @list;
     ok( is_deeply( \@list,  [ 0 .. 9 ] ) );
     ok( is_deeply( \@list1, [ 1 .. 10 ] ) );
-    @list  = ( " foo ", " bar ", "     ", "foobar" );
+    @list  = ( " foo ", " bar ", q{     }, "foobar" );
     @list1 = apply {s/^\s+|\s+$//g} @list;
-    ok( is_deeply( \@list,  [ " foo ", " bar ", "     ", "foobar" ] ) );
-    ok( is_deeply( \@list1, [ "foo",   "bar",   "",      "foobar" ] ) );
+    ok( is_deeply( \@list,  [ " foo ", " bar ", q{     }, "foobar" ] ) );
+    ok( is_deeply( \@list1, [ "foo",   "bar",   q{},      "foobar" ] ) );
     my $item = apply {s/^\s+|\s+$//g} @list;
     is( $item, "foobar" );
 
@@ -712,6 +718,7 @@ sub test_onlyres {
     is( ( onlyres { $_ * 2 } @empty ), undef );
 }
 
+## no critic (Variables::RequireLocalizedPunctuationVars)
 sub test_each_array {
 SCOPE:
     {
@@ -940,7 +947,7 @@ SKIP:
         my @l1 = ( 1 .. 10 );
         @t = pairwise { $a + $b } @l1, @l1;
         like(
-            join( "", @warns[ 0, 1 ] ),
+            join( q{}, @warns[ 0, 1 ] ),
             qr/Use of uninitialized value.*? in addition/,
             "warning on broken caller"
         );
@@ -972,7 +979,7 @@ sub test_natatime {
         my @x  = ( 'a' .. 'g' );
         my $it = natatime 3, @x;
         my @r;
-        local $" = " ";
+        local $" = q{ };
         while ( my @vals = $it->() ) {
             push @r, "@vals";
         }
@@ -1186,8 +1193,8 @@ SCOPE:
 
 SCOPE:
     {
-        my @foo  = ( 'a', 'b', '', undef, 'b', 'c', '' );
-        my @ufoo = ( 'a', 'b', '', undef, 'c' );
+        my @foo  = ( 'a', 'b', q{}, undef, 'b', 'c', q{} );
+        my @ufoo = ( 'a', 'b', q{}, undef, 'c' );
         is_deeply( [ uniq @foo ], \@ufoo, 'undef is supported correctly' );
     }
 
@@ -1276,14 +1283,14 @@ SCOPE:
 
 SCOPE:
     {
-        my @foo  = ( 'a', 'b',   '', undef, 'b', 'c', '' );
+        my @foo  = ( 'a', 'b',   q{}, undef, 'b', 'c', q{} );
         my @sfoo = ( 'a', undef, 'c' );
         is_deeply(
             [ singleton @foo ], \@sfoo,
             'one undef is supported correctly by singleton'
         );
-        @foo  = ( 'a', 'b', '', undef, 'b', 'c', undef );
-        @sfoo = ( 'a', '',  'c' );
+        @foo  = ( 'a', 'b', q{}, undef, 'b', 'c', undef );
+        @sfoo = ( 'a', q{}, 'c' );
         is_deeply(
             [ singleton @foo ], \@sfoo,
             'twice undef is supported correctly by singleton'
@@ -1433,6 +1440,7 @@ sub test_minmax {
     is( $min, -1 );
     is( $max, -1 );
 
+    ## no critic (BuiltinFunctions::ProhibitComplexMappings)
     # COW causes missing max when optimization for 1 argument is applied
     @list = grep { defined $_ } map {
         my ( $min, $max ) = minmax( sprintf( "%.3g", rand ) );
@@ -1814,6 +1822,7 @@ sub test_mode {
 }
 
 {
+    ## no critic (Modules::ProhibitMultiplePackages)
     package Overloaded;
     use overload q{""} => sub { $_[0]->{string} };
 

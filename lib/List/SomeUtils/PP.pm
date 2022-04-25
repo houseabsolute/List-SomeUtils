@@ -8,6 +8,12 @@ use List::Util qw( max );
 
 our $VERSION = '0.59';
 
+## no critic (BuiltinFunctions::ProhibitComplexMappings)
+## no critic (BuiltinFunctions::RequireBlockGrep)
+## no critic (BuiltinFunctions::RequireBlockMap)
+## no critic (ControlStructures::ProhibitCStyleForLoops)
+## no critic (Subroutines::ProhibitManyArgs)
+
 sub any (&@) {
     my $f = shift;
     foreach (@_) {
@@ -276,13 +282,16 @@ sub pairwise (&\@\@) {
     # Localise $a, $b
     my ( $caller_a, $caller_b ) = do {
         my $pkg = caller();
+        ## no critic (TestingAndDebugging::ProhibitNoStrict)
         no strict 'refs';
+        ## no critic (ValuesAndExpressions::ProhibitCommaSeparatedStatements)
         \*{ $pkg . '::a' }, \*{ $pkg . '::b' };
     };
 
     # Loop iteration limit
     my $limit = $#A > $#B ? $#A : $#B;
 
+    ## no critic (Variables::RequireInitializationForLocalVars)
     # This map expression is also the return value
     local ( *$caller_a, *$caller_b );
     map {

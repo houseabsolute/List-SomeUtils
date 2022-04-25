@@ -1,8 +1,10 @@
 package LSU::Test::Import;
 
 use strict;
+use warnings;
 
 BEGIN {
+    ## no critic (Variables::RequireLocalizedPunctuationVars)
     $| = 1;
 }
 
