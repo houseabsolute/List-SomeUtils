@@ -71,7 +71,7 @@ my %aliases = (
     zip           => 'mesh',
 );
 
-our @EXPORT_OK = ( @subs, keys %aliases );
+our @EXPORT_OK   = ( @subs, keys %aliases );
 our %EXPORT_TAGS = ( all => \@EXPORT_OK );
 
 {
