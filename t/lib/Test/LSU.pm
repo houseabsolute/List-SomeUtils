@@ -1,6 +1,7 @@
 package Test::LSU;
 
 use strict;
+use warnings;
 
 require Exporter;
 use Test::More import => ['!pass'];
