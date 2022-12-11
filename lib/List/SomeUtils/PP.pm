@@ -6,7 +6,7 @@ use warnings;
 
 use List::Util qw( max );
 
-our $VERSION = '0.59';
+our $VERSION = '0.60';
 
 ## no critic (BuiltinFunctions::ProhibitComplexMappings)
 ## no critic (BuiltinFunctions::RequireBlockGrep)
