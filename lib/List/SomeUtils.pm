@@ -8,7 +8,7 @@ our $VERSION = '0.59';
 
 use Exporter qw( import );
 
-use Module::Implementation;
+use Module::Implementation 0.04;
 
 my @subs = qw(
     after
