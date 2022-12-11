@@ -6,8 +6,8 @@ use warnings;
 use Config;
 use List::SomeUtils ':all';
 use Scalar::Util qw( weaken );
-use Storable qw( freeze );
-use Tie::Array ();
+use Storable     qw( freeze );
+use Tie::Array   ();
 
 use Test::More 0.96;
 use Test::LSU;
